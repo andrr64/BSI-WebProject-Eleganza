@@ -2,6 +2,7 @@ import bcryptjs from 'bcryptjs'; // Import library bcryptjs untuk melakukan hash
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
 import { Admin } from '../models/admin.model.js'; // Import model Admin untuk berinteraksi dengan database
 import { serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
+import {isTokenValid} from '../security/admin.security.js';
 
 // Fungsi untuk melakukan login admin
 export const loginAdmin = async (req, res, next) => {
@@ -33,20 +34,21 @@ export const loginAdmin = async (req, res, next) => {
     }
 
     // Jika login berhasil, menghasilkan token JWT
-    const token = jwt.sign({ username: username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ username: username }, process.env.JWT_ADMIN_SECRET, { expiresIn: '1h' });
     
     // Kirim respons sukses dengan token JWT
-    res.status(200).json(serverResponse(
-        true,
-        200,
-        {
-            'token': token
-        }
-    ));
+    res
+        .status(200)
+        .cookie('access_token', token, {httpOnly: true})
+        .json(serverResponse(true,200));
 }
 
 // Fungsi untuk membuat admin baru
 export const createAdmin = async (req, res, next) => {
+    const verifyAdmin = await isTokenValid(req.cookies.access_token);
+    if (!verifyAdmin.status){
+        return res.status(verifyAdmin.code).json(verifyAdmin);
+    }
     try {
         const { username, password } = req.body;
 
@@ -57,8 +59,7 @@ export const createAdmin = async (req, res, next) => {
 
         // Periksa apakah admin dengan username tersebut sudah ada dalam database
         const existingAdmin = await Admin.findOne({ username });
-
-        console.log(existingAdmin);
+        
         // Jika admin dengan username tersebut sudah ada, kirim respons dengan status 400
         if (existingAdmin) {
             return res.status(400).json(serverResponse(false, 400, 'Admin with this username already exists'));
@@ -72,7 +73,7 @@ export const createAdmin = async (req, res, next) => {
         await newAdmin.save();
 
         // Kirim respons sukses dengan status 201
-        return res.status(201).json(serverResponse(true, 201, 'Admin created successfully'));
+        return res.status(201).json(serverResponse(true, 201));
     } catch (error) {
         // Tangani kesalahan jika terjadi
         console.error('Error creating admin:', error);
