@@ -49,15 +49,17 @@ export const loginUser = async (req, res, next) => {
         // Jika login berhasil, menghasilkan token JWT
         const token = jwt.sign({ email: validUser.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
         // Kirim respons sukses dengan token JWT dan informasi pengguna yang terbatas
-        return res.status(200).json(
-            serverResponse(true, 200, 
-                { 
-                    token, 
-                    user: { 
-                        email: validUser.email, 
-                        picture: validUser.picture 
-                    } 
-                }
+        return res
+            .status(200)
+            .cookie('access_token', token, {httpOnly: true})
+            .json(
+                serverResponse(true, 200, 
+                    { 
+                        user: { 
+                            email: validUser.email, 
+                            picture: validUser.picture 
+                        } 
+                    }
             )
         );
     } catch (error) {
