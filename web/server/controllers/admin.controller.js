@@ -71,7 +71,6 @@ export const createAdmin = async (req, res, next) => {
         // Buat admin baru dengan password yang telah dienkripsi
         const newAdmin = new Admin({ username, password: hashedPassword });
         await newAdmin.save();
-
         // Kirim respons sukses dengan status 201
         return res.status(201).json(serverResponse(true, 201));
     } catch (error) {
