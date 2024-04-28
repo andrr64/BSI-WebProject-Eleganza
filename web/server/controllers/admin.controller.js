@@ -1,0 +1,83 @@
+import bcryptjs from 'bcryptjs'; // Import library bcryptjs untuk melakukan hashing password
+import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
+import { Admin } from '../models/admin.model.js'; // Import model Admin untuk berinteraksi dengan database
+import { serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
+
+// Fungsi untuk melakukan login admin
+export const loginAdmin = async (req, res, next) => {
+    const { username, password } = req.body; // Mendapatkan username dan password dari body request
+
+    // Memeriksa apakah username dan password tersedia
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password are required' });
+    }
+
+    // Mencari akun admin berdasarkan username di database
+    const account = await Admin.findOne({ username });
+
+    // Jika akun tidak ditemukan, kirim respons dengan status 404
+    if (!account){
+        res.status(404).json(
+            serverResponse(false, 404, 'account not found.')
+        );
+    }
+
+    // Memeriksa apakah password yang diberikan cocok dengan password yang tersimpan di database
+    const passwordIsValid = bcryptjs.compareSync(password, account.password);
+
+    // Jika password tidak cocok, kirim respons dengan status 401
+    if (!passwordIsValid){
+        res.status(401).json(
+            serverResponse(false, 401, 'wrong credentials!')
+        );
+    }
+
+    // Jika login berhasil, menghasilkan token JWT
+    const token = jwt.sign({ username: username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
+    // Kirim respons sukses dengan token JWT
+    res.status(200).json(serverResponse(
+        true,
+        200,
+        {
+            'token': token
+        }
+    ));
+}
+
+// Fungsi untuk membuat admin baru
+export const createAdmin = async (req, res, next) => {
+    try {
+        const { username, password } = req.body;
+
+        // Periksa apakah username dan password tersedia
+        if (!username || !password) {
+            return res.status(400).json(serverResponse(false, 400, 'Username and password are required'));
+        }
+
+        // Periksa apakah admin dengan username tersebut sudah ada dalam database
+        const existingAdmin = await Admin.findOne({ username });
+
+        console.log(existingAdmin);
+        // Jika admin dengan username tersebut sudah ada, kirim respons dengan status 400
+        if (existingAdmin) {
+            return res.status(400).json(serverResponse(false, 400, 'Admin with this username already exists'));
+        }
+
+        // Enkripsi password sebelum menyimpannya ke database
+        const hashedPassword = bcryptjs.hashSync(password, 10);
+
+        // Buat admin baru dengan password yang telah dienkripsi
+        const newAdmin = new Admin({ username, password: hashedPassword });
+        await newAdmin.save();
+
+        // Kirim respons sukses dengan status 201
+        return res.status(201).json(serverResponse(true, 201, 'Admin created successfully'));
+    } catch (error) {
+        // Tangani kesalahan jika terjadi
+        console.error('Error creating admin:', error);
+
+        // Kirim respons dengan status 500 jika terjadi kesalahan internal server
+        return res.status(500).json(serverResponse(false, 500, 'Internal server error'));
+    }
+}
