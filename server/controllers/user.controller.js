@@ -1,13 +1,13 @@
-import {serverResponse} from './response.controller.js';
-import {User} from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
+import { UserAccount } from '../models/user.account.model.js';
+import {serverResponse} from './response.controller.js';
 
 export const createUser = async(req, res, next) => {
     try {
         const { email, password, picture } = req.body;
         const hashPassword = bcryptjs.hashSync(password, 10);
-        const newUser = new User({
+        const newUser = new UserAccount({
             email,
             password: hashPassword,
             picture
@@ -31,7 +31,7 @@ export const loginUser = async (req, res, next) => {
         }
 
         // Mencari pengguna berdasarkan email di database
-        const validUser = await User.findOne({ email });
+        const validUser = await UserAccount.findOne({ email });
 
         // Jika pengguna tidak ditemukan, kirim respons dengan status 404
         if (!validUser) {
