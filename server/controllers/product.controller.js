@@ -30,7 +30,7 @@ export const createProduct = async (req, res, next) => {
 export const updateProduct = async (req, res) => {
     try {
         const { name, list_picture, price, discount, stock } = req.body;
-        const filterData = _productDataFilter(name, price, discount, stock);
+        const filterData = _productDataFilter(name, list_picture, price, discount, stock);
         if (filterData.code !== 0) return serverBadRequest(res, filterData.message);
         
         const oldProduct = await Product.findById(req.params.id);
