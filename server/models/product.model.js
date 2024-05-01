@@ -5,6 +5,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    list_picture: {
+        type: [String],
+        required: true
+    },
     previous_version: {
         type: String,
         required: true
