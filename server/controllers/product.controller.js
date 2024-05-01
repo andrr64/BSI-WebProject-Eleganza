@@ -1,87 +1,84 @@
 import { Product } from "../models/product.model.js";
-import { serverResponse } from "../controllers/response.controller.js";
+import { serverNotFound, serverInternalError, serverResponse, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
 
 const NAME_WRONG = 1;
 const PRICE_WRONG = 2;
 const DISCOUNT_WRONG = 3;
 const STOCK_WRONG = 4;
+const PICTURE_EMPTY = 5;
 
 export const createProduct = async (req, res, next) => {
     try {
-        const { name, price, discount, stock } = req.body;
-        const filterData = productDataFilter(name, price, discount, stock);
-        if (filterData.code !== 0) {
-            res.status(400).json(
-                serverResponse(
-                    false,
-                    filterData.code,
-                    filterData.message
-                )
-            );
-            return; 
-        }
-        const newProduct = new Product({
-            name,
-            price,
-            discount,
-            stock,
+        const { name, list_picture, price, discount, stock } = req.body;
+        const filterData = _productDataFilter(name, list_picture, price, discount, stock);
+        if (filterData.code !== 0) return serverBadRequest(res, filterData.message);
+        await new Product({
+            name: name,
+            list_picture: list_picture,
+            price: price,
+            discount: discount,
+            stock: stock,
             hidden: false,
             previous_version: 'null'
-        });
-        await newProduct.save();
-        res.status(201).json(
-            serverResponse(true, 201, 'Product created successfully!')
-        );
+        }).save();
+        return serverOk(res);
     } catch (error) {
         next(error);
     }
 }
 
-export const updateProduct = async (req, res, next) => {
+export const updateProduct = async (req, res) => {
     try {
-        const { name, price, discount, stock } = req.body;
-        const filterData = productDataFilter(name, price, discount, stock);
-        if (filterData.code !== 0) {
-            res.status(400).json(
-                serverResponse(
-                    false,
-                    400,
-                    filterData.message
-                )
-            );
-            return;
-        }
-        const updatedData = {
-            name,
-            price,
-            discount,
-            stock,
-        };
-        const updatedProduct = await Product.findByIdAndUpdate(
-            req.params.id,
-            updatedData,
-            { new: true }
-        );
-        if (updatedProduct) {
-            res.status(200).json(
-                serverResponse(true, 200, 'Product updated successfully!')
-            );
-        } else {
-            res.status(404).json(
-                serverResponse(false, 404, 'Product not found!')
-            );
-        }
+        const { name, list_picture, price, discount, stock } = req.body;
+        const filterData = _productDataFilter(name, price, discount, stock);
+        if (filterData.code !== 0) return serverBadRequest(res, filterData.message);
+        
+        const oldProduct = await Product.findById(req.params.id);
+        
+        if (oldProduct.hidden === true) return serverNotAcceptable(res);
+
+        const newProduct = new Product({
+            name: name,
+            list_picture: list_picture,
+            previous_version: req.params.id,
+            price: price,
+            discount: discount,
+            stock: stock,
+            hidden: false
+        });
+
+        oldProduct.hidden = true;
+        await oldProduct.save();
+        await newProduct.save();
+        serverOk(res, newProduct);
     } catch (error) {
-        next(error);
+        return serverInternalError(res);
     }
 }
 
-export const productDataFilter = (name, price, discount, stock) => {
+export const getProduct = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const product = await Product.findById(id, 'name list_picture price discount stock');
+        if (!product) return serverNotFound(res);
+        return serverOk(res, product);
+    } catch (error) {
+        res.status(500).json(serverBadRequest());
+    }
+}
+
+const _productDataFilter = (name, list_picture, price, discount, stock) => {
     if (!name) {
         return {
             code: NAME_WRONG,
             message: 'Name is required!'
         };
+    }
+    if(list_picture.length <= 0){
+        return {
+            code: PICTURE_EMPTY,
+            message: 'Image required min. 1 image'
+        }
     }
     if (!price || price <= 0 || price >= 1_000_000_000) {
         return {
