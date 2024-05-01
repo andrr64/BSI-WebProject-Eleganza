@@ -25,6 +25,10 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    collection: {
+        type: String,
+        required: true
+    },
     hidden: {
         type: Boolean,
         required: false
