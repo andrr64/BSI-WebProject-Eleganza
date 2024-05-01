@@ -50,7 +50,7 @@ export const updateProduct = async (req, res) => {
         oldProduct.hidden = true;
         await oldProduct.save();
         await newProduct.save();
-        serverOk(res, newProduct);
+        return serverOk(res, newProduct);
     } catch (error) {
         return serverInternalError(res);
     }
@@ -63,7 +63,7 @@ export const getProduct = async(req, res) => {
         if (!product) return serverNotFound(res);
         return serverOk(res, product);
     } catch (error) {
-        res.status(500).json(serverBadRequest());
+        return serverInternalError(res)
     }
 }
 
