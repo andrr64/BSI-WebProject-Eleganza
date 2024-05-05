@@ -23,7 +23,7 @@ const NavigationBar = () => {
   };
 
   return (
-    <nav className="bg-black text-white flex items-center px-20 py-6">
+    <nav className="bg-black text-white flex items-center px-20 py-5">
       <div className="flex items-center flex-grow">  {/* Flex-grow for spacing */}
         <h1 className="text-4xl font-medium ml-4 font-laBelle">
           <Link to="/">Eleganza</Link>
