@@ -12,6 +12,19 @@
     src: url("./assets/fonts/Inter.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: 'Inter-Light';
+    font-weight: lighter;
+    src: url("./assets//fonts/Inter-Light.ttf") format("truetype");
+}
 .font-laBelle {
     font-family: "La Belle Aurore";
+}
+
+.font-inter {
+    font-family: 'Inter';
+}
+
+.font-inter-light {
+    font-family: 'Inter-Light';
 }
