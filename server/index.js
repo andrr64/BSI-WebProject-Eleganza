@@ -24,7 +24,7 @@ mongoose
     })
 app.listen(3000, () => {
   console.log('-----------------------------');
-  console.log(`Elenza Server ${vers}`);
+  console.log(`Eleganza Server ${vers}`);
   console.log(`Port: 3000`);
   console.log('-----------------------------');
 });
@@ -41,7 +41,7 @@ app.use((err, req, res, next) => {
 app.get('/', (request, response) => {
     response.status(200).send(`
         <h1>
-            Elenza-Server ${vers}
+            Eleganza-Server ${vers}
         </h1>
     `);
 });
