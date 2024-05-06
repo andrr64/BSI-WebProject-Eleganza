@@ -1,6 +1,17 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {faUser} from "@fortawesome/free-solid-svg-icons"
+
+import SearchBar from "./SearchBar"
+
+function ProfileController () {
+  return (
+    <Link to={'/signin'}>
+      <FontAwesomeIcon icon={faUser} color="white" size="xl" className="ml-8"/>
+    </Link>
+  )
+}
 
 const NavigationBar = () => {
   const [activeMenu, setActiveMenu] = useState('Beranda');
@@ -29,11 +40,11 @@ const NavigationBar = () => {
           <Link to="/">Eleganza</Link>
         </h1>
         <div className="hidden md:flex"> {/* Move menu to right side */}
-          <ul className="px-12 flex item-center space-x-10">
+          <ul className="px-12 flex item-center space-x-10 font-inter">
             {navBarMenu.menu.map((menu, index) => (
               <li
                 key={index}
-                className={`${activeMenu === menu ? 'font-bold' : ''} uppercase`}
+                className={`${activeMenu === menu ? 'font-inter font-bold' : 'font-inter-light'} uppercase`}
                 onClick={() => handleMenuClick(menu)}
                 style={{ cursor: 'pointer' }}
               >
@@ -44,8 +55,10 @@ const NavigationBar = () => {
         </div>
       </div>
       <SearchBar />
+      <ProfileController/>
     </nav>
   );
 };
+
 
 export default NavigationBar;
