@@ -9,6 +9,14 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    sex: {
+        type: String,
+        required: true
+    },
+    list_size: {
+        type: [String],
+        required: true
+    },
     list_picture: {
         type: [String],
         required: true
@@ -27,10 +35,6 @@ const productSchema = new mongoose.Schema({
     },
     stock: {
         type: Number,
-        required: true
-    },
-    collection: {
-        type: String,
         required: true
     },
     hidden: {
