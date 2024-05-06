@@ -1,21 +1,23 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
 import { UserAccount } from '../models/user.account.model.js';
-import {serverResponse} from './response.controller.js';
+import {serverBadRequest, serverOk, serverResponse} from './response.controller.js';
+import {newAccountValidation} from '../validation/user.account.validation.js';
 
 export const createUser = async(req, res, next) => {
     try {
-        const { email, password, picture } = req.body;
+        const {name, email, password, picture } = req.body;
+        const validation = await newAccountValidation(name, email, password); 
+        if (validation !== true) return serverBadRequest(res, validation);
         const hashPassword = bcryptjs.hashSync(password, 10);
         const newUser = new UserAccount({
+            name,
             email,
             password: hashPassword,
             picture
         })
         await newUser.save();
-        res.status(201).json(
-            serverResponse(true,201,'OK!')
-        );
+        return serverOk(res);
     } catch (error) {
         next(error);
     }
