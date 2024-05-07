@@ -3,12 +3,21 @@ import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token J
 import { UserAccount } from '../models/user.account.model.js';
 import {serverBadRequest, serverOk, serverResponse} from './response.controller.js';
 import {newAccountValidation} from '../validation/user.account.validation.js';
+import { MESSAGE, serverLog } from './server.log.controller.js';
 
 export const createUser = async(req, res, next) => {
+    const title = 'create user';
     try {
+        serverLog(MESSAGE.STARTOF_REQUEST, `${MESSAGE.STARTOF_REQUEST} [${title  }]`);
         const {name, email, password, picture } = req.body;
         const validation = await newAccountValidation(name, email, password); 
-        if (validation !== true) return serverBadRequest(res, validation);
+        if (validation !== true) {
+            serverLog(MESSAGE.FAILURE, validation)
+            serverLog(MESSAGE.SENDING);
+            serverBadRequest(res, validation)
+            serverLog(MESSAGE.ENDOF_REQUEST);
+            return;
+        }
         const hashPassword = bcryptjs.hashSync(password, 10);
         const newUser = new UserAccount({
             name,
@@ -17,7 +26,12 @@ export const createUser = async(req, res, next) => {
             picture
         })
         await newUser.save();
-        return serverOk(res);
+        serverLog(MESSAGE.OK, 'New account created');
+        serverLog(MESSAGE.SENDING);
+        serverOk(res);
+        serverOk(MESSAGE.OK);
+        return;
+
     } catch (error) {
         next(error);
     }
