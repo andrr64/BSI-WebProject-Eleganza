@@ -5,7 +5,8 @@ export const MESSAGE = {
     ACCEPT              : 'ACCEPT    ',
     SENDING             : 'SENDING   ',
     STARTOF_REQUEST     : 'STARTOFREQ',
-    ENDOF_REQUEST       : 'ENDOFREQ  '
+    ENDOF_REQUEST       : 'ENDOFREQ  ',
+    VALIDATING          : 'VALIDATING'
 }
 
 export const serverLog = (level, message) => {
