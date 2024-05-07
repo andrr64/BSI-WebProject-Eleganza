@@ -1,8 +1,9 @@
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons"
 import GoogleLogo from "../assets/icons/brands/google.svg";
+import { serverApiJsonPost } from "../api/API";
 
 const buatField = (label, idField, type, placeholder, valuePtr, onChange) => {
   return (
@@ -24,14 +25,23 @@ const buatField = (label, idField, type, placeholder, valuePtr, onChange) => {
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigator = useNavigate();
+
+  const handleSubmit = async () => {
+    const response = await(await serverApiJsonPost('/user/login',{
+      email: email,
+      password: password
+    })).json();
+    console.log(response);
+    if (response.status) navigator('/');
+  }
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-
+      <div className="font-inter flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <Link to={'/'} className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-medium text-sm">
+            <Link to={'/'} className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-bold text-sm">
               <FontAwesomeIcon icon={faChevronLeft} className="mr-2"/>
               <p>Kembali ke beranda</p>
             </Link>
@@ -59,14 +69,15 @@ const SignIn = () => {
               </div>
               <div className="space-y-3">
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
+                  type="button"
                   className="duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md bg-gray-800 hover:bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Login
                 </button>
                 <p className="text-center text-sm">atau</p>
                 <button
-                  type="submit"
+                  type="button"
                   className="text-black duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md border bg-transparent hover:bg-gray-100 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm "
                 >
                   <img src={GoogleLogo} alt="Google Logo" className="w-6 h-6 mr-2" />
@@ -78,7 +89,6 @@ const SignIn = () => {
                   Belum memiliki akun? <a href="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Registrasi</a>
                 </p>
               </div>
-              
             </form>
           </div>
         </div>
