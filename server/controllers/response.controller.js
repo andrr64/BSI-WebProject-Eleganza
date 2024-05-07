@@ -19,7 +19,8 @@ export const serverBadRequest = (res, data) => {
 }
 
 export const serverOk = (res, data) => {
-    return res.status(201).json(serverResponse(true, 201, `${data? data : 'OK'}`));
+    if (!data) data = 'OK';
+    return res.status(201).json(serverResponse(true, 201, data? data : 'OK'));
 }
 
 export const serverForbidden = (res) => {
