@@ -6,7 +6,6 @@ import API_userRoute from './routes/user.route.js';
 import API_productRoute from './routes/product.route.js';
 import API_adminRoute from './routes/admin.route.js';
 import { serverResponse } from './controllers/response.controller.js';
-import cors from 'cors';
 
 const app = express();
 const vers = '1.0.0'
@@ -16,7 +15,6 @@ dotenv.config();
 
 app.use(express.json()); 
 app.use(cookieParser());
-app.use(cors());
 
 mongoose
     .connect(process.env.MONGODB)
