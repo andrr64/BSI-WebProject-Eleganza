@@ -6,7 +6,7 @@
 import bcryptjs from 'bcryptjs'; // Import library bcryptjs untuk melakukan hashing password
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
 import { UserAccount } from '../models/user.account.model.js'; // Import model UserAccount untuk berinteraksi dengan database
-import { serverBadRequest, serverOk, serverResponse } from './response.controller.js'; // Import fungsi-fungsi respons server
+import { serverBadRequest, serverForbidden, serverNotFound, serverOk, serverResponse } from './response.controller.js'; // Import fungsi-fungsi respons server
 import { newAccountValidation } from '../validation/user.account.validation.js'; // Import fungsi validasi akun baru
 import { MESSAGE, serverLog } from './server.log.controller.js'; // Import konstanta pesan dan fungsi pencatatan log
 
@@ -138,5 +138,23 @@ export const loginUser = async (req, res, next) => {
         // Tangani kesalahan jika terjadi
         console.error('Error logging in user:', error);
         return res.status(500).json(serverResponse(false, 500, 'Internal server error'));
+    }
+}
+
+export const isTokenOk = async (req, res, next) => {
+    try {
+        const token = req.cookies.access_token;
+        if (!token) {
+            return serverBadRequest(res);
+        }
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return serverForbidden(res, 'invalid or expired token');
+            } else {
+                return serverOk(res);
+            }
+        });
+    } catch (error) {
+        next();
     }
 }

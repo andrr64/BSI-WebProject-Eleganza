@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import './NavigationBar.css'
 import SearchBar from "./SearchBar"
-import Profile from "./Profile";
+import ProfileButton from "./ProfileButton";
 import { ROUTE } from "../../AppRoute";
 
 const NavigationBar = () => {
@@ -39,7 +39,7 @@ const NavigationBar = () => {
       </div>
       <ul className="flex space-x-6">
         <li><SearchBar/></li>
-        <li><Profile/></li>
+        <li><ProfileButton/></li>
       </ul>
     </nav>
   );
