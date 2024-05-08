@@ -2,8 +2,11 @@ import { Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons"
-import GoogleLogo from "../assets/icons/brands/google.svg";
-import { serverApiJsonPost } from "../api/API";
+import { serverApiJsonPost } from "../../api/API.jsx";
+import { useDispatch } from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice.js";
+
+import GoogleLogo from "../../assets/icons/brands/google.svg";
 
 const buatField = (label, idField, type, placeholder, valuePtr, onChange) => {
   return (
@@ -26,14 +29,20 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigator = useNavigate();
-
+  const dispatch = useDispatch();
   const handleSubmit = async () => {
+    dispatch(signInStart());
     const response = await(await serverApiJsonPost('/user/login',{
       email: email,
       password: password
     })).json();
-    console.log(response);
-    if (response.status) navigator('/');
+    if (response.status){
+      dispatch(signInSuccess(response.data.user));
+      navigator('/');
+      return;
+    }
+    dispatch(signInFailure('Login Fail...'));
+    return;
   }
 
   return (

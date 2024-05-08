@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft} from "@fortawesome/free-solid-svg-icons"
-import GoogleLogo from "../assets/icons/brands/google.svg";
-import { serverApiJsonPost } from "../api/API";
+import GoogleLogo from "../../assets/icons/brands/google.svg";
+import { serverApiJsonPost } from "../../api/API";
 
 const buatField = (label, idField, type, placeholder, onChange, isError, errorText, callback = undefined) => {
   return (
