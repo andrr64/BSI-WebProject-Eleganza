@@ -2,15 +2,16 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft} from "@fortawesome/free-solid-svg-icons"
-import GoogleLogo from "../../assets/icons/brands/google.svg";
 import { serverApiJsonPost } from "../../api/API";
+import { useDispatch } from "react-redux";
+import { signInSuccess } from "../../redux/user/userSlice";
+import GoogleLogo from "../../assets/icons/brands/google.svg";
 
 const buatField = (label, idField, type, placeholder, onChange, isError, errorText, callback = undefined) => {
   return (
     <div>
       <label htmlFor={idField} className={`block mb-2 text-sm font-medium ${isError ? 'text-red-600' : 'text-gray-900 dark:text-white'}`}>
         {label}
-        {isError && <span className="ml-1 font-bold">*</span>}
       </label>
       <input 
         type={type} 
@@ -32,6 +33,7 @@ const buatField = (label, idField, type, placeholder, onChange, isError, errorTe
 
 const SignUp = () => {
   const navigator = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({});
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -80,17 +82,14 @@ const SignUp = () => {
   };
   const handleSubmit = async () => {
     if (!validateForm()) return;
-  
-    // Option 1: Don't set picture to null if not needed
-    // setFormData({...formData, picture: null}); // Remove this line if not sending picture
-  
-    // Option 2: Send an empty string for picture if needed
     setFormData({ ...formData, picture: null });
     try {
       const res = await serverApiJsonPost('/user/create', formData);
       const responseJson = await res.json();
       if (responseJson.status){
-        navigator('/');
+        dispatch(signInSuccess(responseJson.data));
+        navigator('/')
+        return;
       }
     } catch (error) {
       console.log(error.message);
@@ -98,6 +97,7 @@ const SignUp = () => {
   }
 
   return (
+    <>
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="font-inter flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -143,6 +143,7 @@ const SignUp = () => {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
