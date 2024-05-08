@@ -1,51 +1,36 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { SignXCtrl } from "./pages/user/SignXCtrl";
 import Homepage from "./pages/Homepage"
-import Man from "./pages/Collection/Man";
-import Woman from "./pages/Collection/Woman";
+import Man from "./pages/Man";
+import Woman from "./pages/Woman";
 import SignIn from "./pages/user/SignIn";
 import SignUp from "./pages/user/SignUp";
-import NavigationBar from "./components/NavigationBar";
-import Footer from "./components/Footer";
 import ProfileCtrl from "./pages/user/ProfileCtrl";
 import Profile from "./pages/user/Profile";
-import { SignXCtrl } from "./pages/user/SignXCtrl";
+import NotFound from "./pages/NotFound";
+import Experiment from "./pages/Experiment";
+import {ROUTE} from "./AppRoute";
 
 function App() {
   return (
     <BrowserRouter>
-      <NavigationBarControl />
       <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/collection/man' element={<Man />} />
-        <Route path='/collection/woman' element={<Woman />} />
+        <Route path={ROUTE.homepage} element={<Homepage />} />
+        <Route path={ROUTE.man} element={<Man />} />
+        <Route path={ROUTE.woman} element={<Woman />} />
         <Route element={<SignXCtrl />}>
-          <Route path='/signin' element={<SignIn />} />
-          <Route path='/signup' element={<SignUp />} />
+          <Route path={ROUTE.user.signin} element={<SignIn />} />
+          <Route path={ROUTE.user.signup} element={<SignUp />} />
         </Route>
+        <Route path="/experiment" element={<Experiment/>} />
         <Route element={<ProfileCtrl />}>
-          <Route path='/profile' element={<Profile/>} />
+          <Route path={ROUTE.user.profile} element={<Profile/>} />
         </Route>
+        {/* Rute untuk URL tidak valid*/}
+        <Route path='*' element={<NotFound/>} /> 
       </Routes>
-      <FooterControl />
     </BrowserRouter>
   )
 }
 
-function FooterControl(){
-  const location = useLocation();
-  if (
-    location.pathname === '/signin' || 
-    location.pathname === '/signup'){
-    return null;
-  }
-  return <Footer/>
-}
-
-function NavigationBarControl() {
-  const location = useLocation();
-  if (location.pathname === '/signin' || location.pathname === '/signup') {
-    return null;
-  }
-  return <NavigationBar />;
-}
 export default App;
