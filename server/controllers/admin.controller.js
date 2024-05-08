@@ -1,10 +1,23 @@
+/*
+    File: auth.controller.js
+    Deskripsi: Modul untuk mengelola otentikasi admin
+*/
+
 import bcryptjs from 'bcryptjs'; // Import library bcryptjs untuk melakukan hashing password
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
 import { Admin } from '../models/admin.model.js'; // Import model Admin untuk berinteraksi dengan database
 import { serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
-import {isTokenValid} from '../security/admin.security.js';
+import { isTokenValid } from '../security/admin.security.js'; // Import fungsi isTokenValid untuk memeriksa kevalidan token JWT
 
-// Fungsi untuk melakukan login admin
+/*
+    Fungsi: loginAdmin
+    Deskripsi: Melakukan proses login admin
+    Parameter: 
+        - req: objek request dari client
+        - res: objek response yang akan dikirimkan kembali ke client
+        - next: fungsi middleware selanjutnya dalam rangkaian middleware Express (tidak digunakan dalam fungsi ini)
+    Return: Tidak ada
+*/
 export const loginAdmin = async (req, res, next) => {
     const { username, password } = req.body; // Mendapatkan username dan password dari body request
 
@@ -43,7 +56,15 @@ export const loginAdmin = async (req, res, next) => {
         .json(serverResponse(true,200));
 }
 
-// Fungsi untuk membuat admin baru
+/*
+    Fungsi: createAdmin
+    Deskripsi: Membuat admin baru dalam sistem
+    Parameter: 
+        - req: objek request dari client
+        - res: objek response yang akan dikirimkan kembali ke client
+        - next: fungsi middleware selanjutnya dalam rangkaian middleware Express (tidak digunakan dalam fungsi ini)
+    Return: Tidak ada
+*/
 export const createAdmin = async (req, res, next) => {
     const verifyAdmin = await isTokenValid(req.cookies.access_token);
     if (!verifyAdmin.status){
