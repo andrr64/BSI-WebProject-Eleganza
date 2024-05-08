@@ -8,3 +8,12 @@ export const serverApiJsonPost = async (api, body) => {
     });
     return res;
 }
+
+export const serverApiJsonGet = async (api) => {
+    return await fetch(`/api/v1${api}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+}
