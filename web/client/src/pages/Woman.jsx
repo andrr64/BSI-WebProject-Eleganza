@@ -1,12 +1,17 @@
+import NavigationBar from "../components/navbar/NavigationBar"
+import Footer from "../components/Footer"
+
 function Woman() {
   return (
-    <div>
+    <>
+      <NavigationBar/>
       <div className="h-screen">
         <p className="text-center">
           Woman Collection
         </p>
       </div>
-    </div>
+      <Footer/>      
+    </>
   )
 }
 
