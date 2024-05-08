@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice.js";
 
 import GoogleLogo from "../../assets/icons/brands/google.svg";
+import { ROUTE } from "../../AppRoute.jsx";
 
 const buatField = (label, idField, type, placeholder, valuePtr, onChange, isError, errorMessage) => {
   return (
@@ -75,7 +76,7 @@ const SignIn = () => {
     })).json();
     if (response.status) {
       dispatch(signInSuccess(response.data.user));
-      navigator('/');
+      navigator(ROUTE.homepage);
       return;
     }
     dispatch(signInFailure('Login Fail...'));
@@ -153,7 +154,7 @@ const SignIn = () => {
               </div>
               <div className="text-sm font-light text-gray-800">
                 <p>
-                  Belum memiliki akun? <a href="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Registrasi</a>
+                  Belum memiliki akun? <a href={ROUTE.user.signup} className="font-medium text-primary-600 hover:underline dark:text-primary-500">Registrasi</a>
                 </p>
               </div>
             </form>
