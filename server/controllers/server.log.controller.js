@@ -27,5 +27,6 @@ export const MESSAGE = {
     Return: Tidak ada
 */
 export const serverLog = (level, message) => {
-    console.log(`${level}\t: ${message ? message : level}`);
+    const time = new Date();
+    console.log(`${time.toISOString()} ${level}\t: ${message ? message : level}`);
 }
