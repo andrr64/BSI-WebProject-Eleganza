@@ -1,12 +1,12 @@
+import GoogleLogo from "../../assets/icons/brands/google.svg";
+import Swal from "sweetalert2"
 import { Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons"
 import { serverApiJsonPost } from "../../api/API.jsx";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice.js";
-
-import GoogleLogo from "../../assets/icons/brands/google.svg";
 import { ROUTE } from "../../AppRoute.jsx";
 
 const buatField = (label, idField, type, placeholder, valuePtr, onChange, isError, errorMessage) => {
@@ -40,6 +40,7 @@ const SignIn = () => {
     message: ''
   })
   const [password, setPassword] = useState('');
+  const reduxUser = useSelector((state) => state.user);
   const navigator = useNavigate();
   const dispatch = useDispatch();
 
@@ -75,11 +76,17 @@ const SignIn = () => {
       password: password
     })).json();
     if (response.status) {
-      dispatch(signInSuccess(response.data.user));
+      await dispatch(signInSuccess(response.data.user));
       navigator(ROUTE.homepage);
       return;
     }
-    dispatch(signInFailure('Login Fail...'));
+    await dispatch(signInFailure('Invalid email or password, try again.'));
+    Swal.fire({
+      title: 'Login Failed',
+      text: reduxUser.error,
+      icon: "error",
+      confirmButtonColor: "#000",
+    });
     return;
   };
 
