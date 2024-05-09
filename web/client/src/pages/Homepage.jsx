@@ -1,12 +1,10 @@
-import NavigationBar from "../components/navbar/NavigationBar"
 import Footer from "../components/Footer"
 
 function Homepage() {
   return (
     <>
-      <NavigationBar/>
       <div>
-        <div className="h-screen">
+        <div className="h-screen my-20">
           <p className="text-center">
             Beranda
           </p>

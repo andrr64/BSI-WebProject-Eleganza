@@ -1,14 +1,10 @@
-import NavigationBar from "../components/navbar/NavigationBar"
 import Footer from "../components/Footer"
 
 function Woman() {
   return (
     <>
-      <NavigationBar/>
-      <div className="h-screen">
-        <p className="text-center">
-          Woman Collection
-        </p>
+      <div className="h-screen my-20">
+        Woman Collection
       </div>
       <Footer/>      
     </>

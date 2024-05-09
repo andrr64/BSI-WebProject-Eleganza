@@ -1,14 +1,10 @@
-import NavigationBar from "../components/navbar/NavigationBar"
 import Footer from "../components/Footer"
 
 function Man() {
   return (
     <>
-      <NavigationBar/>
-      <div className="h-screen">
-        <p className="text-center">
-          Man Collection
-        </p>
+      <div className="h-screen my-20 bg-red">
+        Man Collection
       </div>
       <Footer/>      
     </>
