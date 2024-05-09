@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
 import { SignXCtrl } from "./pages/user/SignXCtrl";
+import {ROUTE} from "./AppRoute";
 import Homepage from "./pages/Homepage"
 import Man from "./pages/Man";
 import Woman from "./pages/Woman";
@@ -9,11 +10,21 @@ import ProfileCtrl from "./pages/user/ProfileCtrl";
 import Profile from "./pages/user/Profile";
 import NotFound from "./pages/NotFound";
 import Experiment from "./pages/Experiment";
-import {ROUTE} from "./AppRoute";
+import NavigationBar from "./components/navbar/NavigationBar";
+
+function NavigationBarControl() {
+  const location = useLocation();
+  if (
+    location.pathname === ROUTE.user.signin ||
+    location.pathname === ROUTE.user.signup
+  ) return null;
+  return <NavigationBar/>; 
+}
 
 function App() {
   return (
     <BrowserRouter>
+      <NavigationBarControl/>
       <Routes>
         <Route path={ROUTE.homepage} element={<Homepage />} />
         <Route path={ROUTE.man} element={<Man />} />
@@ -22,12 +33,11 @@ function App() {
           <Route path={ROUTE.user.signin} element={<SignIn />} />
           <Route path={ROUTE.user.signup} element={<SignUp />} />
         </Route>
-        <Route path="/experiment" element={<Experiment/>} />
         <Route element={<ProfileCtrl />}>
           <Route path={ROUTE.user.profile} element={<Profile/>} />
         </Route>
-        {/* Rute untuk URL tidak valid*/}
-        <Route path='*' element={<NotFound/>} /> 
+        <Route path='*' element={<NotFound/>} /> {/* Rute untuk URL tidak valid*/}
+        <Route path="/experiment" element={<Experiment/>} />
       </Routes>
     </BrowserRouter>
   )
