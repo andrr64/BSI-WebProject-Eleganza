@@ -143,14 +143,19 @@ export const loginUser = async (req, res, next) => {
 
 export const isTokenOk = async (req, res, next) => {
     try {
+        serverLog(MESSAGE.STARTOF_REQUEST);
         const token = req.cookies.access_token;
         if (!token) {
+            serverLog(MESSAGE.FAILURE, 'Empty token!');
             return serverBadRequest(res);
         }
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
+                serverLog(MESSAGE.ENDOF_REQUEST);
                 return serverForbidden(res, 'invalid or expired token');
             } else {
+                serverLog(MESSAGE.OK, 'Token accepted');
+                serverLog(MESSAGE.ENDOF_REQUEST);
                 return serverOk(res);
             }
         });
