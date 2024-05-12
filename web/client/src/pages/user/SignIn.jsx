@@ -69,6 +69,7 @@ const SignIn = () => {
     return isValid;
   }
   const handleSubmit = async () => {
+    const localError = 'Invalid email or password, try again.';
     if (!validateForm()) return;
     dispatch(signInStart());
     const response = await (await serverApiJsonPost('/user/login', {
@@ -76,16 +77,22 @@ const SignIn = () => {
       password: password
     })).json();
     if (response.status) {
-      await dispatch(signInSuccess(response.data.user));
+      dispatch(signInSuccess(response.data.user));
       navigator(ROUTE.homepage);
       return;
+    } else {
+      Swal.fire({
+        title: 'Network Error',
+        text: '404 Notfound. Connection error(?)',
+        icon: "question",
+      })
     }
-    await dispatch(signInFailure('Invalid email or password, try again.'));
+    dispatch(signInFailure('Invalid email or password, try again.'));
     Swal.fire({
       title: 'Login Failed',
-      text: reduxUser.error,
+      text: localError,
       icon: "error",
-      confirmButtonColor: "#000",
+      confirmButtonColor: "black",
     });
     return;
   };
