@@ -5,9 +5,9 @@ import { ROUTE } from "../../AppRoute"
 
 export default function ProfileButton() {
     return (    
-    <div className="transition hover:translate-y-1 ease-in-out">
+    <div>
         <Link to={ROUTE.user.profile}>
-         <FontAwesomeIcon icon={faUser} color="white" size="lg"/>
+            <FontAwesomeIcon icon={faUser} color="white" size="lg"/>
         </Link>
     </div>
     )
