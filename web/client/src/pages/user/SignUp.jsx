@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft} from "@fortawesome/free-solid-svg-icons"
 import { serverApiJsonPost } from "../../api/API";
-import { useDispatch } from "react-redux";
-import { signInSuccess } from "../../redux/user/userSlice";
 import GoogleLogo from "../../assets/icons/brands/google.svg";
-
+import Swal from "sweetalert2";
+import { ROUTE } from "../../AppRoute";
+``
 const buatField = (label, idField, type, placeholder, onChange, isError, errorText, callback = undefined) => {
   return (
     <div>
@@ -32,8 +32,6 @@ const buatField = (label, idField, type, placeholder, onChange, isError, errorTe
 }
 
 const SignUp = () => {
-  const navigator = useNavigate();
-  const dispatch = useDispatch();
   const [formData, setFormData] = useState({});
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -41,6 +39,7 @@ const SignUp = () => {
   const [nameErrorMsg, setNameErrorMsg] = useState('');
   const [emailErrorMsg, setEmailErrorMsg] = useState('');
   const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
+  const navigateTo = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -87,12 +86,25 @@ const SignUp = () => {
       const res = await serverApiJsonPost('/user/create', formData);
       const responseJson = await res.json();
       if (responseJson.status){
-        dispatch(signInSuccess(responseJson.data));
-        navigator('/')
+        Swal.fire({
+          title: 'Success',
+          text: 'Account created successfully!',
+          icon: "success",
+          confirmButtonColor: "green"
+        }).then(() => {
+          navigateTo(ROUTE.user.profile);
+        });
         return;
+      } else {
+        throw new Error(responseJson.data);
       }
     } catch (error) {
-      console.log(error.message);
+      Swal.fire({
+        title: 'FAILED',
+        text: error.message.toUpperCase(),
+        icon: "error",
+        confirmButtonColor: "black"
+      })
     }
   }
 
