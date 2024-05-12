@@ -31,7 +31,7 @@ const NavigationBar = () => {
             {navbarItems.map((item, index) => (
               <li
                 key={index}
-                className={`font-medium hover:translate-y-1 uppercase transition ease-in-out`}
+                className={`font-medium uppercase`}
                 style={{ cursor: 'pointer' }}
               >
                 <Link to={item.path}>{item.title}</Link>
