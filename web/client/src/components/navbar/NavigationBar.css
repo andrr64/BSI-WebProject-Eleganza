@@ -2,5 +2,5 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1; /* Pastikan navbar tampil di atas konten lain */
+    z-index: 15; /* Pastikan navbar tampil di atas konten lain */
   }
