@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom"
-import './NavigationBar.css'
+import ProfileMenu from './ProfileMenu';
 import SearchBar from "./SearchBar"
-import ProfileButton from "./ProfileButton";
-import { ROUTE } from "../../AppRoute";
 import MenuBar from "./MenuBar";
+import { Link } from "react-router-dom"
+import { ROUTE } from "../../AppRoute";
+
+import './NavigationBar.css'
 
 const NavigationBar = () => {
   const createNavBarItem = (title, path) => {
@@ -42,7 +43,7 @@ const NavigationBar = () => {
       </div>
       <ul className="flex space-x-6">
         <li><SearchBar/></li>
-        <li><ProfileButton/></li>
+        <li><ProfileMenu/></li>
         <li className="md:hidden">
           <MenuBar/>
         </li>
