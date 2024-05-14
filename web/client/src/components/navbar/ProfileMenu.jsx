@@ -1,8 +1,9 @@
+import Swal from "sweetalert2"
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faDoorOpen, faGear, faReceipt, faRightToBracket, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ROUTE } from '../../AppRoute';
 import { signOutStart, signOutSuccess } from '../../redux/user/userSlice';
 
@@ -11,7 +12,6 @@ export default function ProfileMenu() {
   const menuRef = useRef(null);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleIconClick = () => {
     setIsMenuOpen(prevState => !prevState);
@@ -24,9 +24,13 @@ export default function ProfileMenu() {
   };
 
   const handleSignOut = async () => {
+    setIsMenuOpen(false);
     dispatch(signOutStart());    
     dispatch(signOutSuccess());  
-    navigate('/');      
+    Swal.fire({
+      title: 'Sign Out Successfully',
+      icon: "success"
+    });
   }
 
   useEffect(() => {
@@ -37,10 +41,13 @@ export default function ProfileMenu() {
   }, []);
 
   const getMenu = () => {
-    const buildMenuItem = (title, link) => {
+    const buildMenuItem = (title, link, icon = false, on_click = () => {}) => {
       return (
-        <Link to={link}>
-          <li className='px-5 py-2 hover:bg-gray-100 cursor-pointer'>
+        <Link to={link} onClick={on_click}>
+          <li className='flex items-center justify-left px-5 py-2 hover:bg-gray-100 cursor-pointer'>
+            {icon && (
+                <FontAwesomeIcon className="w-12" icon={icon}/>
+            )}
             {title}
           </li>
         </Link>
@@ -50,21 +57,17 @@ export default function ProfileMenu() {
     if (user.currentUser == null){
       return (
         <ul className='py-1'>
-          {buildMenuItem('Sign In', ROUTE.user.signin)}
-          {buildMenuItem('Sign Up', ROUTE.user.signup)}
+          {buildMenuItem('Sign In', ROUTE.user.signin, faRightToBracket)}
+          {buildMenuItem('Sign Up', ROUTE.user.signu, faUserPlus)}
         </ul>
       )
-    } else {
+    } 
+    else {
       return (
         <ul className='py-1'>
-        {buildMenuItem('Account', ROUTE.user.account)}
-        {buildMenuItem('My Transaction', ROUTE.user.transactions)}
-        <li 
-          onClick={handleSignOut} 
-          className={`px-4 py-2 hover:bg-gray-100 cursor-pointer ${user.loading ? 'disable' : ''}`}
-        >
-            Sign Out
-        </li>
+          {buildMenuItem('Account Setting', ROUTE.user.account, faGear)}
+          {buildMenuItem('My Transaction', ROUTE.user.transactions, faReceipt)}
+          {buildMenuItem('Sign Out', '', faDoorOpen, handleSignOut)}
       </ul>
       )
     }
