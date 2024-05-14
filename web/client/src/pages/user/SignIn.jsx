@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons"
 import { serverApiJsonPost } from "../../api/API.jsx";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice.js";
 import { ROUTE } from "../../AppRoute.jsx";
 
@@ -40,7 +40,6 @@ const SignIn = () => {
     message: ''
   })
   const [password, setPassword] = useState('');
-  const reduxUser = useSelector((state) => state.user);
   const navigator = useNavigate();
   const dispatch = useDispatch();
 
