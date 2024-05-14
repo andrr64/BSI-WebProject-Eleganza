@@ -1,15 +1,15 @@
 import GoogleLogo from "../../assets/icons/brands/google.svg";
 import Swal from "sweetalert2"
 import { Link, useNavigate} from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faChevronLeft} from "@fortawesome/free-solid-svg-icons"
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
 import { serverApiJsonPost } from "../../api/API.jsx";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice.js";
 import { ROUTE } from "../../AppRoute.jsx";
 
-const buatField = (label, idField, type, placeholder, valuePtr, onChange, isError, errorMessage) => {
+const createField = (label, idField, type, placeholder, valuePtr, onChange, isError, errorMessage) => {
   return (
     <div>
       <label htmlFor={idField} className={`block mb-2 text-sm font-medium ${isError ? 'text-red-600' : 'text-gray-900 dark:text-white'}`}>
@@ -29,6 +29,19 @@ const buatField = (label, idField, type, placeholder, valuePtr, onChange, isErro
   )
 }
 
+function loginButton (handleSubmit, isLoading){
+  return (
+    <button
+      id="loginButton"
+      onClick={handleSubmit}
+      type="button"
+      className={`duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md bg-gray-800 hover:bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:opacity-80 ${isLoading? 'disabled' : ''}`}
+    >
+      {isLoading? 'Wait...' : 'Login'}
+    </button>
+  )
+}
+
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState({
@@ -40,8 +53,9 @@ const SignIn = () => {
     message: ''
   })
   const [password, setPassword] = useState('');
-  const navigator = useNavigate();
   const dispatch = useDispatch();
+  const {loading} = useSelector((state) => state.user || {});
+  const navigate = useNavigate();
 
   // Handle Enter key press on email or password field
   const handleKeyDown = (event) => {
@@ -68,32 +82,40 @@ const SignIn = () => {
     return isValid;
   }
   const handleSubmit = async () => {
-    const localError = 'Invalid email or password, try again.';
-    if (!validateForm()) return;
-    dispatch(signInStart());
-    const response = await (await serverApiJsonPost('/user/login', {
-      email: email,
-      password: password
-    })).json();
-    if (response.status) {
-      dispatch(signInSuccess(response.data.user));
-      navigator(ROUTE.homepage);
-      return;
-    } else {
+    try {
+      const localError = 'Invalid email or password, try again.';
+      if (!validateForm()) return;
+      dispatch(signInStart());
+      const response = await (await serverApiJsonPost('/user/login', {
+        email: email,
+        password: password
+      })).json();
+      if (response.status) {
+        dispatch(signInSuccess(response.data.user));
+        navigate(ROUTE.homepage);
+        return;
+      } else {
+        Swal.fire({
+          title: 'Network Error',
+          text: '404 Notfound. Connection error(?)',
+          icon: "question",
+        })
+      }
+      dispatch(signInFailure('Invalid email or password, try again.'));
       Swal.fire({
-        title: 'Network Error',
-        text: '404 Notfound. Connection error(?)',
-        icon: "question",
+        title: 'Login Failed',
+        text: localError,
+        icon: "error",
+        confirmButtonColor: "black",
+      });
+      return;
+    } catch (error) {
+      Swal.fire({
+        title: "Network Error",
+        icon: "error",
+        text: 'Failed to connect to server'
       })
     }
-    dispatch(signInFailure('Invalid email or password, try again.'));
-    Swal.fire({
-      title: 'Login Failed',
-      text: localError,
-      icon: "error",
-      confirmButtonColor: "black",
-    });
-    return;
   };
 
   return (
@@ -115,7 +137,7 @@ const SignIn = () => {
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">
               <div onKeyDown={(handleKeyDown)}>
-                {buatField('Email', 'email', 'email', 'user@email.com', email, (e) => {
+                {createField('Email', 'email', 'email', 'user@email.com', email, (e) => {
                   setEmail(e.target.value);
                   if (emailError.error === true){
                     setEmailError({
@@ -126,7 +148,7 @@ const SignIn = () => {
                 }, emailError.error, emailError.message)}
               </div>
               <div onKeyDown={handleKeyDown}>
-                {buatField('Password', 'password', 'password', '••••••••', password, (e) => {
+                {createField('Password', 'password', 'password', '••••••••', password, (e) => {
                   setPassword(e.target.value);
                   if (passwordError.error === true){
                     setPasswordError({
@@ -148,14 +170,7 @@ const SignIn = () => {
                 <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Lupa Password?</a>
               </div>
               <div className="space-y-3">
-                <button
-                  id="loginButton"
-                  onClick={handleSubmit}
-                  type="button"
-                  className="duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md bg-gray-800 hover:bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Login
-                </button>
+                {loginButton(handleSubmit, loading)}
                 <p className="text-center text-sm">atau</p>
                 <button
                   type="button"
