@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-export function CollectionCard({link, imageUrl, title, extraClassname=null, font=null, height='100vh', fontSize="text-lg lg:text-3xl"}) {
+export function CollectionCard({link, imageUrl, title, extraClassname=null, font=null, height='100vh', fontSize="text-lg lg:text-3xl"}, uppercase=true) {
   return (
     <Link 
       to={link}
@@ -25,11 +25,11 @@ export function CollectionCard({link, imageUrl, title, extraClassname=null, font
       <div
         className="
           absolute inset-0
-          bg-black opacity-10 hover:opacity-30 transition duration-500 ease-in-out
+          bg-black opacity-5 hover:opacity-30 transition duration-500 ease-in-out
         "
       ></div>
       <div className="justify-center items-center flex py-2 px-6 z-10 text-white">
-        <p className={`${font !== null? font : 'font-inter'} uppercase ${fontSize} text-center`}>{title}</p>
+        <p className={`${font !== null? font : 'font-inter'} ${uppercase === true? 'uppercase' : ''} ${fontSize} text-center`}>{title}</p>
       </div>
     </Link>
   );
