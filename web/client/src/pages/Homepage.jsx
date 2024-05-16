@@ -1,72 +1,8 @@
-import Footer from "../components/Footer"
-import { Link } from "react-router-dom"
+import Footer from "../components/Footer";
+import {CollectionCard} from "../components/_CollectionCard";
+import {UnggulanCard} from "../components/_UnggulanCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-
-
-function buildCollectionCard(link, imageUrl, title, extraClassname) {
-  return (
-    <Link 
-      to={link}
-      className={`
-        rounded-2xl overflow-hidden h-64 w-1/3 
-        transition duration-500 ease-in-out 
-        flex justify-center items-center
-        relative
-        ${extraClassname}
-      `}
-    >
-      <img 
-        src={imageUrl}
-        alt={title}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-      <div
-        className="
-          absolute inset-0
-          bg-black opacity-20 hover:opacity-40 transition duration-500 ease-in-out
-        "
-      ></div>
-      <div 
-        className="z-10 text-center text-white font-inter text-3xl">
-        {title}
-      </div>
-    </Link>
-  );
-}
-function buildUnggulanCard(link, imageUrl, title, extraClassname) {
-  return (
-    <Link 
-      to={link}
-      className={`
-        homepage-unggulan
-        flex justify-center items-center
-        relative
-        transition duration-500 ease-in-out
-        hover:scale-95
-        ${extraClassname}
-      `}
-      style={{
-        height: '100vh'
-      }}
-    >
-      <img 
-        src={imageUrl}
-        alt={title}
-        className="absolute inset-0 w-full h-full object-cover object-top"
-      />
-      <div
-        className="
-          absolute inset-0
-          bg-black opacity-10 hover:opacity-30 transition duration-500 ease-in-out
-        "
-      ></div>
-      <div className="justify-center items-center flex backdrop-blur-sm border py-2 px-6 z-10 text-white bg-white bg-opacity-30">
-        <p className="uppercase text-lg text-center">{title}</p>
-      </div>
-    </Link>
-  );
-}
 
 function Homepage() {
   return (
@@ -88,32 +24,56 @@ function Homepage() {
             </p>
           </div>
           <div className="flex space-x-12">
-            {buildCollectionCard('http://google.com', 'https://pinoy-in-style.com/wp-content/uploads/2020/11/1-819x1024.jpg', 'Simple')}
-            {buildCollectionCard('http://google.com', 'https://i.pinimg.com/564x/52/6f/bb/526fbbe9dcd5899ee6f423d36a5d33d3.jpg', 'Vintage')}
+            <CollectionCard 
+              link='http://google.com' 
+              imageUrl='https://pinoy-in-style.com/wp-content/uploads/2020/11/1-819x1024.jpg' 
+              title='Simple' 
+            />
+            <CollectionCard 
+              link='http://google.com' 
+              imageUrl='https://i.pinimg.com/564x/52/6f/bb/526fbbe9dcd5899ee6f423d36a5d33d3.jpg' 
+              title='Vintage' 
+            />
           </div>
         </section>
 
         <section id="unggulan" 
           className="justify-center mt-5"
         >
-          <div className="flex justify-center items-center my-12">
-            <h1 className="text-2xl md:text-3xl font-inter-light">
-              JADILAH DIRI SENDIRI
-            </h1>
-          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 px-5 gap-2 w-full h-1/2 mb-5">
-            {buildUnggulanCard("https://google.com", "https://images.pexels.com/photos/15937632/pexels-photo-15937632/free-photo-of-young-man-with-bleached-hair-in-a-casual-black-outfit.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", "pria", "")}
-            {buildUnggulanCard("https://google.com", "https://plus.unsplash.com/premium_photo-1682095664848-014a0a2bfd8a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", "wanita", "")}
+            <UnggulanCard 
+              link="https://google.com" 
+              imageUrl="https://images.pexels.com/photos/15937632/pexels-photo-15937632/free-photo-of-young-man-with-bleached-hair-in-a-casual-black-outfit.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+              title="pria" 
+            />
+            <UnggulanCard 
+              link="https://google.com" 
+              imageUrl="https://plus.unsplash.com/premium_photo-1682095664848-014a0a2bfd8a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+              title="wanita" 
+            />
           </div>
 
           <div className="flex justify-center items-center my-12">
-            <h1 className="text-2xl md:text-3xl font-inter-light underline">
-              UNGGULAN
+            <h1 className="text-2xl md:text-3xl font-inter-light ">
+              KATEGORI
             </h1>
           </div>
           <div className="grid justify-center items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {buildUnggulanCard('http://adidas.com', 'https://i.pinimg.com/originals/08/89/9f/08899fbe510797b1151df941b01530e2.jpg', 'SEPATU')}
-            {buildUnggulanCard('http://adidas.com', 'https://i.pinimg.com/736x/43/98/34/4398343f91fc640bfa0e1629946989c4.jpg', 'TAS')}
+            <UnggulanCard 
+              link='http://adidas.com' 
+              imageUrl='https://i.pinimg.com/originals/08/89/9f/08899fbe510797b1151df941b01530e2.jpg' 
+              title='SEPATU' 
+            />
+            <UnggulanCard 
+              link='http://adidas.com' 
+              imageUrl='https://i.pinimg.com/736x/43/98/34/4398343f91fc640bfa0e1629946989c4.jpg' 
+              title='TAS' 
+            />
+            <UnggulanCard 
+              link='https://adidas.com'
+              imageUrl='https://i.pinimg.com/564x/c5/51/6f/c5516fed38bb44da3d025c048e5e0020.jpg'
+              title='PARFUM'
+            />
           </div>
         </section>
 
@@ -137,7 +97,7 @@ function Homepage() {
       </div>
       <Footer/>
     </>
-  )
+  );
 }
 
-export default Homepage
+export default Homepage;
