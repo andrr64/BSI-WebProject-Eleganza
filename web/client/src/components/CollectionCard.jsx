@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-export function CollectionCard({link, imageUrl, title, extraClassname=null, font=null}) {
+export function CollectionCard({link, imageUrl, title, extraClassname=null, font=null, height='100vh', fontSize="text-lg lg:text-3xl"}) {
   return (
     <Link 
       to={link}
@@ -14,7 +14,7 @@ export function CollectionCard({link, imageUrl, title, extraClassname=null, font
         ${extraClassname != null? extraClassname : ''}
       `}
       style={{
-        height: '100vh'
+        height: height
       }}
     >
       <img 
@@ -29,7 +29,7 @@ export function CollectionCard({link, imageUrl, title, extraClassname=null, font
         "
       ></div>
       <div className="justify-center items-center flex py-2 px-6 z-10 text-white">
-        <p className={`${font !== null? font : 'font-inter'} uppercase text-lg lg:text-3xl text-center`}>{title}</p>
+        <p className={`${font !== null? font : 'font-inter'} uppercase ${fontSize} text-center`}>{title}</p>
       </div>
     </Link>
   );
