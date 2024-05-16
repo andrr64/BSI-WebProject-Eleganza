@@ -5,7 +5,6 @@ import SignIn from "./SignIn";
 
 export function SignInController () {
   const {currentUser} = useSelector((state) => state.user);
-  console.log(currentUser);
   return currentUser === null?
     <SignIn/>:
     <Navigate to={ROUTE.homepage}/>;
