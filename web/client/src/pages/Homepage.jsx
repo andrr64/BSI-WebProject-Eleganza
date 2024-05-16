@@ -1,6 +1,5 @@
 import Footer from "../components/Footer";
-import {CollectionCard} from "../components/_CollectionCard";
-import {UnggulanCard} from "../components/_UnggulanCard";
+import {CollectionCard} from "../components/CollectionCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,7 +13,7 @@ function Homepage() {
           </p>
         </section>
         
-        <section id="collection" className="px-5 md:px-2">
+        {/* <section id="collection" className="px-5 md:px-2">
           <div className="my-10">
             <h1 className="underline font-inter-light text-2xl md:text-3xl">
               Koleksi Terbaru
@@ -35,21 +34,24 @@ function Homepage() {
               title='Vintage' 
             />
           </div>
-        </section>
+        </section> */}
 
         <section id="unggulan" 
           className="justify-center mt-5"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 px-5 gap-2 w-full h-1/2 mb-5">
-            <UnggulanCard 
+            <CollectionCard 
               link="https://google.com" 
               imageUrl="https://images.pexels.com/photos/15937632/pexels-photo-15937632/free-photo-of-young-man-with-bleached-hair-in-a-casual-black-outfit.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-              title="pria" 
+              title="MAN" 
+              font="font-josefin"
+              extraClassname={"font-bold"}
             />
-            <UnggulanCard 
+            <CollectionCard 
               link="https://google.com" 
               imageUrl="https://plus.unsplash.com/premium_photo-1682095664848-014a0a2bfd8a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-              title="wanita" 
+              title="wanita"
+              font={"font-mandali"}
             />
           </div>
 
@@ -59,17 +61,17 @@ function Homepage() {
             </h1>
           </div>
           <div className="grid justify-center items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-            <UnggulanCard 
+            <CollectionCard 
               link='http://adidas.com' 
               imageUrl='https://i.pinimg.com/originals/08/89/9f/08899fbe510797b1151df941b01530e2.jpg' 
               title='SEPATU' 
             />
-            <UnggulanCard 
+            <CollectionCard 
               link='http://adidas.com' 
               imageUrl='https://i.pinimg.com/736x/43/98/34/4398343f91fc640bfa0e1629946989c4.jpg' 
               title='TAS' 
             />
-            <UnggulanCard 
+            <CollectionCard 
               link='https://adidas.com'
               imageUrl='https://i.pinimg.com/564x/c5/51/6f/c5516fed38bb44da3d025c048e5e0020.jpg'
               title='PARFUM'

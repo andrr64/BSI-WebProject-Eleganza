@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-export function UnggulanCard({link, imageUrl, title, extraClassname}) {
+export function CollectionCard({link, imageUrl, title, extraClassname=null, font=null}) {
   return (
     <Link 
       to={link}
@@ -11,7 +11,7 @@ export function UnggulanCard({link, imageUrl, title, extraClassname}) {
         relative
         transition duration-500 ease-in-out
         hover:scale-95
-        ${extraClassname}
+        ${extraClassname != null? extraClassname : ''}
       `}
       style={{
         height: '100vh'
@@ -29,10 +29,10 @@ export function UnggulanCard({link, imageUrl, title, extraClassname}) {
         "
       ></div>
       <div className="justify-center items-center flex py-2 px-6 z-10 text-white">
-        <p className="uppercase text-lg text-center">{title}</p>
+        <p className={`${font !== null? font : 'font-inter'} uppercase text-lg lg:text-3xl text-center`}>{title}</p>
       </div>
     </Link>
   );
 }
 
-export default UnggulanCard;
+export default CollectionCard;
