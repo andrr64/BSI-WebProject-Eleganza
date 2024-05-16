@@ -22,6 +22,12 @@
     font-weight: lighter;
     src: url("./assets/fonts/Inter-Light.ttf") format("truetype");
 }
+
+@font-face {
+    font-family: 'Mandali';
+    src: url("./assets/fonts/Mandali-Regular.ttf") format("truetype");
+}
+
 .font-laBelle {
     font-family: "La Belle Aurore";
 }
@@ -36,4 +42,8 @@
 
 .font-josefin {
     font-family: "Josefin";
+}
+
+.font-mandali {
+    font-family: "Mandali";
 }
