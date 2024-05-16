@@ -43,7 +43,7 @@ function Homepage() {
             <CollectionCard 
               link="https://google.com" 
               imageUrl="https://images.pexels.com/photos/15937632/pexels-photo-15937632/free-photo-of-young-man-with-bleached-hair-in-a-casual-black-outfit.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-              title="MAN" 
+              title="PRIA" 
               font="font-josefin"
               extraClassname={"font-bold"}
             />
@@ -51,7 +51,7 @@ function Homepage() {
               link="https://google.com" 
               imageUrl="https://plus.unsplash.com/premium_photo-1682095664848-014a0a2bfd8a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
               title="wanita"
-              font={"font-mandali"}
+              font={"font-inter-light"}
             />
           </div>
 
@@ -62,19 +62,28 @@ function Homepage() {
           </div>
           <div className="grid justify-center items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
             <CollectionCard 
+              title='SEPATU' 
               link='http://adidas.com' 
               imageUrl='https://i.pinimg.com/originals/08/89/9f/08899fbe510797b1151df941b01530e2.jpg' 
-              title='SEPATU' 
+              font={"font-inter-light"}
+              fontSize="text-lg md:text-2xl"
+              height="85vh"
             />
             <CollectionCard 
+              title='TAS' 
               link='http://adidas.com' 
               imageUrl='https://i.pinimg.com/736x/43/98/34/4398343f91fc640bfa0e1629946989c4.jpg' 
-              title='TAS' 
+              font={"font-inter-light"}
+              fontSize="text-lg md:text-2xl"
+              height="85vh"
             />
             <CollectionCard 
+              title='PARFUM'
               link='https://adidas.com'
               imageUrl='https://i.pinimg.com/564x/c5/51/6f/c5516fed38bb44da3d025c048e5e0020.jpg'
-              title='PARFUM'
+              font={"font-inter-light"}
+              fontSize="text-lg md:text-2xl"
+              height="85vh"
             />
           </div>
         </section>
