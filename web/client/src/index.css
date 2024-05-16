@@ -7,6 +7,11 @@
     src: url("./assets/fonts/LaBelleAurore-Regular.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "Josefin";
+    src: url("./assets/fonts/JosefinSans.ttf") format("truetype");
+}
+
 @font-face{
     font-family: 'Inter';
     src: url("./assets/fonts/Inter.ttf") format("truetype");
@@ -15,7 +20,7 @@
 @font-face {
     font-family: 'Inter-Light';
     font-weight: lighter;
-    src: url("./assets//fonts/Inter-Light.ttf") format("truetype");
+    src: url("./assets/fonts/Inter-Light.ttf") format("truetype");
 }
 .font-laBelle {
     font-family: "La Belle Aurore";
@@ -27,4 +32,8 @@
 
 .font-inter-light {
     font-family: 'Inter-Light';
+}
+
+.font-josefin {
+    font-family: "Josefin";
 }
