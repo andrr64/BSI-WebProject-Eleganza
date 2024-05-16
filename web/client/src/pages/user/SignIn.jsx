@@ -1,9 +1,9 @@
 import GoogleLogo from "../../assets/icons/brands/google.svg";
-import Swal from "sweetalert2"
-import { Link, useNavigate} from "react-router-dom";
-import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { serverApiJsonPost } from "../../api/API.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice.js";
@@ -47,14 +47,14 @@ const SignIn = () => {
   const [emailError, setEmailError] = useState({
     error: false,
     message: ''
-  })
+  });
+  const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState({
     error: false,
     message: ''
-  })
-  const [password, setPassword] = useState('');
+  });
   const dispatch = useDispatch();
-  const {loading} = useSelector((state) => state.user || {});
+  const { loading, error } = useSelector((state) => state.user || {});
   const navigate = useNavigate();
 
   // Handle Enter key press on email or password field
@@ -63,24 +63,28 @@ const SignIn = () => {
       document.getElementById("loginButton").click();
     }
   };
+
+  // Form Validation
   const validateForm = () => {
     let isValid = true;
     if (!password){
       setPasswordError({
         error: true,
         message: 'Password is empty!'
-      })
+      });
       isValid = false;
     }
     if (!email){
       setEmailError({
         error: true,
         message: 'Email is empty!'
-      })
+      });
       isValid = false;
     }
     return isValid;
-  }
+  };
+
+  // Handle Form Submission
   const handleSubmit = async () => {
     try {
       const localError = 'Invalid email or password, try again.';
@@ -99,7 +103,7 @@ const SignIn = () => {
           title: 'Network Error',
           text: '404 Notfound. Connection error(?)',
           icon: "question",
-        })
+        });
       }
       dispatch(signInFailure('Invalid email or password, try again.'));
       Swal.fire({
@@ -109,12 +113,13 @@ const SignIn = () => {
         confirmButtonColor: "black",
       });
       return;
-    } catch (error) {
+    } catch (x) {
+      dispatch(signInFailure('Failed when communicate to server'));
       Swal.fire({
         title: "Network Error",
         icon: "error",
-        text: 'Failed to connect to server'
-      })
+        text: error,
+      });
     }
   };
 
@@ -136,14 +141,14 @@ const SignIn = () => {
               Masuk
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">
-              <div onKeyDown={(handleKeyDown)}>
+              <div onKeyDown={handleKeyDown}>
                 {createField('Email', 'email', 'email', 'user@email.com', email, (e) => {
                   setEmail(e.target.value);
                   if (emailError.error === true){
                     setEmailError({
                       error: false,
                       message: ''
-                    })
+                    });
                   }
                 }, emailError.error, emailError.message)}
               </div>
@@ -154,7 +159,7 @@ const SignIn = () => {
                     setPasswordError({
                       error: false,
                       message: ''
-                    })
+                    });
                   }
                 }, passwordError.error, passwordError.message)}
               </div>
