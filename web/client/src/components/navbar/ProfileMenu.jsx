@@ -58,7 +58,7 @@ export default function ProfileMenu() {
       return (
         <ul className='py-1'>
           {buildMenuItem('Sign In', ROUTE.user.signin, faRightToBracket)}
-          {buildMenuItem('Sign Up', ROUTE.user.signu, faUserPlus)}
+          {buildMenuItem('Sign Up', ROUTE.user.signup, faUserPlus)}
         </ul>
       )
     } 
@@ -68,18 +68,18 @@ export default function ProfileMenu() {
           {buildMenuItem('Account Setting', ROUTE.user.account, faGear)}
           {buildMenuItem('My Transaction', ROUTE.user.transactions, faReceipt)}
           {buildMenuItem('Sign Out', '', faDoorOpen, handleSignOut)}
-      </ul>
+        </ul>
       )
     }
   }
 
   return (
-    <div className="cursor-pointer relative inline-block" ref={menuRef}>
+    <div className="w-full cursor-pointer relative inline-block" ref={menuRef}>
       <div onClick={handleIconClick}>
         <FontAwesomeIcon icon={faUser} size='lg' />
       </div>
       {isMenuOpen && (
-        <div className="text-black absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg">
+        <div className="text-black absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded shadow-lg">
           {getMenu()}
         </div>
       )}
