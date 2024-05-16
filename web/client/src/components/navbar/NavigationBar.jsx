@@ -14,9 +14,10 @@ const NavigationBar = () => {
     }
   }
   const navbarItems = [
-    createNavBarItem('Home', ROUTE.homepage),
-    createNavBarItem('Man', ROUTE.man),
-    createNavBarItem('Woman', ROUTE.woman),
+    createNavBarItem('Homepage', ROUTE.homepage),
+    createNavBarItem('Pria', ROUTE.man),
+    createNavBarItem('Wanita', ROUTE.woman),
+    createNavBarItem('Anak-Anak', ROUTE.children),
   ]
 
   return (
