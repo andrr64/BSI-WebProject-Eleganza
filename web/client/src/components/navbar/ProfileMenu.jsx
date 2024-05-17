@@ -28,7 +28,8 @@ export default function ProfileMenu() {
     dispatch(signOutStart());    
     dispatch(signOutSuccess());  
     Swal.fire({
-      title: 'Sign Out Successfully',
+      title: 'Logout',
+      text: "Logout berhasil",
       icon: "success"
     });
   }
@@ -57,17 +58,17 @@ export default function ProfileMenu() {
     if (user.currentUser == null){
       return (
         <ul className='py-1'>
-          {buildMenuItem('Sign In', ROUTE.user.signin, faRightToBracket)}
-          {buildMenuItem('Sign Up', ROUTE.user.signup, faUserPlus)}
+          {buildMenuItem('Masuk', ROUTE.user.signin, faRightToBracket)}
+          {buildMenuItem('Registrasi', ROUTE.user.signup, faUserPlus)}
         </ul>
       )
     } 
     else {
       return (
         <ul className='py-1'>
-          {buildMenuItem('Account Setting', ROUTE.user.account, faGear)}
-          {buildMenuItem('My Transaction', ROUTE.user.transactions, faReceipt)}
-          {buildMenuItem('Sign Out', '', faDoorOpen, handleSignOut)}
+          {buildMenuItem('Peraturan Akun', ROUTE.user.account, faGear)}
+          {buildMenuItem('Transaksi Ku', ROUTE.user.transactions, faReceipt)}
+          {buildMenuItem('Keluar', '', faDoorOpen, handleSignOut)}
         </ul>
       )
     }
