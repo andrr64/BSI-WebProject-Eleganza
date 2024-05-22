@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft} from "@fortawesome/free-solid-svg-icons"
 import { serverApiJsonPost } from "../../api/API";
-import GoogleLogo from "../../assets/icons/brands/google.svg";
 import Swal from "sweetalert2";
 import { ROUTE } from "../../AppRoute";
 ``
@@ -133,23 +132,25 @@ const SignUp = () => {
               {buatField('Email', 'email', 'email', 'contoh@email.com', handleChange, emailError, emailErrorMsg, () => setEmailError(false))}
               {buatField('Password', 'password', 'password', '••••••••', handleChange, passwordError, passwordErrorMsg, () => setPasswordError(false))}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Sudah memiliki akun? <a href="/signin" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Masuk</a>
+                Sudah memiliki akun? <a href={ROUTE.user.signin} className="font-medium text-primary-600 hover:underline dark:text-primary-500">Masuk</a>
               </p>
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md bg-gray-800 hover:bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                <span className="my-1">Buat Akun</span>
-              </button>
-                <p className="text-center text-sm">atau</p>
+              <div className="py-2">
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md bg-gray-800 hover:bg-gray-900 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  <span className="my-1">Buat Akun</span>
+                </button>
+              </div>
+                {/* <p className="text-center text-sm">atau</p>
               <button
                   type="button"
                   className="text-black duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md border bg-transparent hover:bg-gray-100 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm "
                 >
                   <img src={GoogleLogo} alt="Google Logo" className="w-6 h-6 mr-2" />
                   Daftar dengan Google
-                </button>
+                </button> */}
             </form>
           </div>
         </div>

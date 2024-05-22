@@ -1,5 +1,3 @@
-import GoogleLogo from "../../assets/icons/brands/google.svg";
-import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +6,7 @@ import { serverApiJsonPost } from "../../api/API.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice.js";
 import { ROUTE } from "../../AppRoute.jsx";
+import { showAlert, ALERT } from "../../components/Alert.jsx";
 
 const createField = (label, idField, type, placeholder, valuePtr, onChange, isError, errorMessage) => {
   return (
@@ -35,7 +34,7 @@ function loginButton (handleSubmit, isLoading){
       id="loginButton"
       onClick={handleSubmit}
       type="button"
-      className={`duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md bg-gray-800 hover:bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:opacity-80 ${isLoading? 'disabled' : ''}`}
+      className={`duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md bg-gray-800 hover:bg-gray-900 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm disabled:opacity-80 ${isLoading? 'disabled' : ''}`}
     >
       {isLoading? 'Wait...' : 'Login'}
     </button>
@@ -54,7 +53,7 @@ const SignIn = () => {
     message: ''
   });
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.user || {});
+  const { loading } = useSelector((state) => state.user || {});
   const navigate = useNavigate();
 
   // Handle Enter key press on email or password field
@@ -99,27 +98,14 @@ const SignIn = () => {
         navigate(ROUTE.homepage);
         return;
       } else {
-        Swal.fire({
-          title: 'Network Error',
-          text: '404 Notfound. Connection error(?)',
-          icon: "question",
-        });
+        showAlert(ALERT.WARNING, 'Network Error', '404 Not Found. Connection error(?)');
       }
       dispatch(signInFailure('Invalid email or password, try again.'));
-      Swal.fire({
-        title: 'Login Failed',
-        text: localError,
-        icon: "error",
-        confirmButtonColor: "black",
-      });
+      showAlert(ALERT.FAIL, 'Login Failed', localError);
       return;
     } catch (x) {
       dispatch(signInFailure('Failed when communicate to server'));
-      Swal.fire({
-        title: "Network Error",
-        icon: "error",
-        text: error,
-      });
+      showAlert(ALERT.FAIL, 'Network Error');
     }
   };
 
@@ -175,15 +161,18 @@ const SignIn = () => {
                 <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Lupa Password?</a>
               </div>
               <div className="space-y-3">
-                {loginButton(handleSubmit, loading)}
-                <p className="text-center text-sm">atau</p>
+                <div className="py-2">
+                  {loginButton(handleSubmit, loading)}
+                </div>
+                {/* <p className="text-center text-sm">atau</p>
                 <button
                   type="button"
+                  onClick={handleGoogleAuth}
                   className="text-black duration-300 hover:-translate-y-1 transition ease-in-out delay-150 flex w-full justify-center rounded-md border bg-transparent hover:bg-gray-100 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm "
                 >
                   <img src={GoogleLogo} alt="Google Logo" className="w-6 h-6 mr-2" />
                   Login dengan Google
-                </button>
+                </button> */}
               </div>
               <div className="text-sm font-light text-gray-800">
                 <p>
