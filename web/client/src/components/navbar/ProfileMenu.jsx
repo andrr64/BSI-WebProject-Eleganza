@@ -1,4 +1,3 @@
-import Swal from "sweetalert2"
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDoorOpen, faGear, faReceipt, faRightToBracket, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ROUTE } from '../../AppRoute';
 import { signOutStart, signOutSuccess } from '../../redux/user/userSlice';
+import { showAlert, ALERT } from "../Alert";
 
 export default function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,16 +22,12 @@ export default function ProfileMenu() {
       setIsMenuOpen(false);
     }
   };
-
+``
   const handleSignOut = async () => {
     setIsMenuOpen(false);
     dispatch(signOutStart());    
     dispatch(signOutSuccess());  
-    Swal.fire({
-      title: 'Logout',
-      text: "Logout berhasil",
-      icon: "success"
-    });
+    showAlert(ALERT.SUCCESS, 'Logout Success')
   }
 
   useEffect(() => {

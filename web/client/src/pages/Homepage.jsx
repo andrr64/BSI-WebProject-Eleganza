@@ -112,13 +112,13 @@ function Homepage() {
   return (
     <>
       <div className="content px-10">
-        <section id="" className="h-screen px-5 my-20">
+        <div id="" className="h-screen px-5 my-20">
           <p className="text-center">
             Mama
           </p>
-        </section>
+        </div>
         
-        <section id="by-brand" className="justify-center my-12">
+        <div id="by-brand" className="justify-center my-12">
           {_Title('merek unggulan')}
           <div className="grid grid-cols-1 md:grid-cols-3 px-5 gap-2 w-full h-1/2 mb-5">
             {
@@ -135,14 +135,17 @@ function Homepage() {
                     uppercase={item.uppercase}
                     scaleTransition = {item.scaleTransition}
                     opacityTransition = {item.opacityTransition}
+                    titleWithImage= {item.titleWithImage}
+                    titleWithImageHeight={item.titleWithImageHeight}
+                    titleWithImageWidth={item.titleWithImageWidth}
                   />
                 )
               })
             }
           </div>
-        </section>
+        </div>
 
-        <section id="by-gender" className="justify-center my-12">
+        <div id="by-gender" className="justify-center my-12">
           <div className="grid grid-cols-1 md:grid-cols-2 px-5 gap-2 w-full h-1/2 mb-5">
             {
               collectionByGender.map((item, index) => {
@@ -163,9 +166,9 @@ function Homepage() {
               })
             }
           </div>
-        </section>
+        </div>
         
-        <section id="by-category" className="justify-center my-12">
+        <div id="by-category" className="justify-center my-12">
           {_Title("kategori")}
           <div className="grid justify-center items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
             {
@@ -192,7 +195,7 @@ function Homepage() {
               TAMPILKAN LEBIH BANYAK
             </button>
           </div>
-        </section>
+        </div>
         
         {/* <section id="costumer-care" className="w-full flex justify-center px-10 py-20">
           <img className="rounded-lg w-1/2" src="https://media.graphassets.com/FFUsIOhsSKeVVHz1eHGC" alt="" />
