@@ -62,7 +62,7 @@ export default function ProfileMenu() {
     else {
       return (
         <ul className='py-1'>
-          {buildMenuItem('Peraturan Akun', ROUTE.user.account, faGear)}
+          {buildMenuItem('Pengaturan Akun', ROUTE.user.account, faGear)}
           {buildMenuItem('Transaksi Ku', ROUTE.user.transactions, faReceipt)}
           {buildMenuItem('Keluar', '', faDoorOpen, handleSignOut)}
         </ul>
