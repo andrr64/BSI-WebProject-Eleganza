@@ -7,18 +7,18 @@ import { ROUTE } from "../../AppRoute";
 import './NavigationBar.css'
 
 const NavigationBar = () => {
-  const createNavBarItem = (title, path) => {
-    return {
-      title: title,
-      path: path
-    }
-  }
-  const navbarItems = [
-    createNavBarItem('Homepage', ROUTE.homepage),
-    createNavBarItem('Pria', ROUTE.man),
-    createNavBarItem('Wanita', ROUTE.woman),
-    createNavBarItem('Anak-Anak', ROUTE.children),
-  ]
+  // const createNavBarItem = (title, path) => {
+  //   return {
+  //     title: title,
+  //     path: path
+  //   }
+  // }
+  // const navbarItems = [
+  //   createNavBarItem('Homepage', ROUTE.homepage),
+  //   createNavBarItem('Pria', ROUTE.man),
+  //   createNavBarItem('Wanita', ROUTE.woman),
+  //   createNavBarItem('Anak-Anak', ROUTE.children),
+  // ]
 
   return (
     <nav className="bg-black text-white py-5 px-8 md:px-10 lg:px-14 flex items-center navigationBar">
@@ -28,19 +28,6 @@ const NavigationBar = () => {
             Eleganza
           </h1>
         </Link>
-        <div className="font-inter hidden md:flex"> {/* Move menu to right side */}
-          <ul className="px-12 flex item-center space-x-10">
-            {navbarItems.map((item, index) => (
-              <li
-                key={index}
-                className={`font-medium uppercase`}
-                style={{ cursor: 'pointer' }}
-              >
-                <Link to={item.path}>{item.title}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
       <ul className="flex space-x-6">
         <li><SearchBar/></li>
