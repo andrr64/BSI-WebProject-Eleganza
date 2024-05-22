@@ -96,6 +96,24 @@ function Homepage() {
         height: "60vh",
         titleWithImage: "https://firebasestorage.googleapis.com/v0/b/andreas-web-cloud-5c228.appspot.com/o/brand-logo-gucci.png?alt=media&token=7ac9f185-e560-4045-b82d-cfe87510ba4d",
         titleWithImageHeight: "20vh"
+      },
+      {
+        imageUrl: "https://3.bp.blogspot.com/-QV0t0B97IGE/UWa3ahgk7VI/AAAAAAAATJ0/T0PB4Cv43kM/s1600/HM_Icon.jpg",
+        height: "60vh",
+        titleWithImage:"https://id.hm.com/static/version1715875220/frontend/GillCapital/hm/id_ID/images/logo.svg", 
+        titleWithImageHeight: "15vh"
+      },
+      {
+        imageUrl: "https://static.zara.net/assets/public/b19c/6ae2/e2834ad0940e/eae517e06dac/image-portrait-ipad-fill-07d21e92-cead-42b6-bc4a-3d72235ff9c8-default_0.jpg?ts=1716148259702&w=1139",
+        height: "60vh",
+        titleWithImage:"https://upload.wikimedia.org/wikipedia/commons/f/fd/Zara_Logo.svg",
+        titleWithImageHeight: "10vh"
+      },
+      {
+        imageUrl: "https://image.uniqlo.com/UQ/ST3/id/imagesgoods/467536001/item/idgoods_69_467536001.jpg?width=750",
+        height: "60vh",
+        titleWithImage:"https://upload.wikimedia.org/wikipedia/commons/9/92/UNIQLO_logo.svg",
+        titleWithImageHeight: "20vh"
       }
     ];
   }
