@@ -62,6 +62,12 @@ export default function ProfileMenu() {
     else {
       return (
         <ul className='py-1'>
+          <li>
+            <div className='px-5 py-5'>
+              <h1 className='text-lg md:text-2xl font-bold font-inter'>{user.currentUser.name}</h1>
+              <p>{user.currentUser.email}</p>
+            </div>
+          </li>
           {buildMenuItem('Pengaturan Akun', ROUTE.user.account, faGear)}
           {buildMenuItem('Transaksi Ku', ROUTE.user.transactions, faReceipt)}
           {buildMenuItem('Keluar', '', faDoorOpen, handleSignOut)}
