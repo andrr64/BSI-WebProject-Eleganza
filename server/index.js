@@ -6,11 +6,9 @@ import API_userRoute from './routes/user.route.js';
 import API_productRoute from './routes/product.route.js';
 import API_adminRoute from './routes/admin.route.js';
 import { serverResponse } from './controllers/response.controller.js';
-import { isTokenOk } from './controllers/user.controller.js';
 
 const app = express();
 const vers = '1.0.0'
-
 
 dotenv.config();
 
