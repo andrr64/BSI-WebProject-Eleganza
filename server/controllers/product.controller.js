@@ -1,34 +1,56 @@
 import { Product } from "../models/product.model.js";
-import { serverNotFound, serverInternalError, serverResponse, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
+import { serverNotFound, serverInternalError, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
+import { uploadImages } from "./product.images.controller.js";
 
+// Kode status untuk validasi data produk
 const NAME_WRONG = 1;
 const PRICE_WRONG = 2;
 const DISCOUNT_WRONG = 3;
 const STOCK_WRONG = 4;
 const PICTURE_EMPTY = 5;
-const COLLECTION_EMPTY = 6;
+const BRAND_EMPTY = 6;
 
+/**
+ * Membuat produk baru dan menyimpannya ke dalam database.
+ * @param {Object} req - Objek request dari client.
+ * @param {Object} res - Objek response untuk dikirim kembali ke client.
+ * @param {Function} next - Fungsi middleware untuk menangani error.
+ */
 export const createProduct = async (req, res, next) => {
     try {
-        const { name, list_picture, price, discount, stock } = req.body;
-        const filterData = _productDataFilter(name, list_picture, price, discount, stock, collection);
-        if (filterData.code !== 0) return serverBadRequest(res, filterData.message);
-        await new Product({
+        const { name, brand, category, sex, list_size, price, discount, stock } = req.body;
+        const files = req.files; // File yang diunggah
+
+        // Membuat dan menyimpan produk baru
+        const newProduct = new Product({
             name: name,
-            list_picture: list_picture,
+            brand: brand,
+            category: category,
+            sex: sex,
+            list_size: list_size,
             price: price,
             discount: discount,
             stock: stock,
-            collection: collection,
             hidden: false,
             previous_version: 'null'
-        }).save();
+        });
+
+        await newProduct.save();
+
+        // Mengunggah dan menyimpan gambar terkait produk
+        await uploadImages(files, newProduct._id);
+
         return serverOk(res);
     } catch (error) {
         next(error);
     }
 }
 
+/**
+ * Memperbarui produk yang ada di database.
+ * @param {Object} req - Objek request dari client.
+ * @param {Object} res - Objek response untuk dikirim kembali ke client.
+ */
 export const updateProduct = async (req, res) => {
     try {
         const { name, list_picture, price, discount, stock, collection } = req.body;
@@ -59,6 +81,11 @@ export const updateProduct = async (req, res) => {
     }
 }
 
+/**
+ * Mengambil detail produk berdasarkan ID.
+ * @param {Object} req - Objek request dari client.
+ * @param {Object} res - Objek response untuk dikirim kembali ke client.
+ */
 export const getProduct = async(req, res) => {
     try {
         const id = req.params.id;
@@ -70,17 +97,43 @@ export const getProduct = async(req, res) => {
     }
 }
 
-const _productDataFilter = (name, list_picture, price, discount, stock, collection) => {
+/**
+ * Mengambil produk berdasarkan nama merek (brand).
+ * @param {Object} req - Objek request dari client.
+ * @param {Object} res - Objek response untuk dikirim kembali ke client.
+ */
+export const getProductByBrand = async(req, res) => {
+    try {
+        const brandName = req.params.brand_name;
+        const products = await Product.find({brand: brandName});
+        if (!products.length) return serverNotFound(res, "No products found for this brand.");
+        return serverOk(res, products);
+    } catch (error) {
+        
+    }
+}
+
+/**
+ * Melakukan validasi data produk sebelum penyimpanan.
+ * @param {string} name - Nama produk.
+ * @param {Array} list_picture - Array gambar produk.
+ * @param {number} price - Harga produk.
+ * @param {number} discount - Diskon produk.
+ * @param {number} stock - Stok produk.
+ * @param {string} brand - Merek produk.
+ * @returns {Object} Objek yang berisi kode validasi dan pesan kesalahan jika ada.
+ */
+const _productDataFilter = (name, list_picture, price, discount, stock, brand) => {
     if (!name) {
         return {
             code: NAME_WRONG,
             message: 'Name is required!'
         };
     }
-    if (!collection) {
+    if (!brand) {
         return {
-            code: COLLECTION_EMPTY,
-            message: 'Collection is required!'
+            code: BRAND_EMPTY,
+            message: 'Brand is required!'
         }
     }
     if(list_picture.length <= 0){
