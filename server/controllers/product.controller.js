@@ -1,5 +1,6 @@
 import { Product } from "../models/product.model.js";
-import { serverNotFound, serverInternalError, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
+import { serverNotFound, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
+import { serverProcess } from "./server.process.controller.js";
 
 // Kode status untuk validasi data produk
 const NAME_WRONG = 1;
@@ -13,20 +14,18 @@ const BRAND_EMPTY = 6;
  * Membuat produk baru dan menyimpannya ke dalam database.
  * @param {Object} req - Objek request dari client.
  * @param {Object} res - Objek response untuk dikirim kembali ke client.
- * @param {Function} next - Fungsi middleware untuk menangani error.
  */
-export const createProduct = async (req, res, next) => {
-    try {
-        const { name, brand, category, sex, list_size, list_picture, price, discount, stock } = req.body;
+export const createProduct = async (req, res) => {
+    await serverProcess(res, async () => {
+        const { name, brand_id, category, sex, list_size, list_picture, price, discount, stock } = req.body;
 
         if (!list_picture){
             return serverBadRequest(res, 'images is required!');
         }
 
-        // Membuat dan menyimpan produk baru
         const newProduct = new Product({
             name: name,
-            brand: brand,
+            brand_id: brand_id,
             category: category,
             sex: sex,
             list_size: list_size,
@@ -35,14 +34,12 @@ export const createProduct = async (req, res, next) => {
             discount: discount,
             stock: stock,
             hidden: false,
-            previous_version: 'null     '
+            previous_version: 'null'
         });
 
         await newProduct.save();
-        return serverOk(res);
-    } catch (error) {
-        next(error);
-    }
+        serverOk(res);
+    }, 'create product');
 }
 
 /**
@@ -51,7 +48,7 @@ export const createProduct = async (req, res, next) => {
  * @param {Object} res - Objek response untuk dikirim kembali ke client.
  */
 export const updateProduct = async (req, res) => {
-    try {
+    await serverProcess(res, async () => {
         const { name, list_picture, price, discount, stock, collection } = req.body;
         const filterData = _productDataFilter(name, list_picture, price, discount, stock);
         if (filterData.code !== 0) return serverBadRequest(res, filterData.message);
@@ -74,10 +71,8 @@ export const updateProduct = async (req, res) => {
         oldProduct.hidden = true;
         await oldProduct.save();
         await newProduct.save();
-        return serverOk(res, newProduct);
-    } catch (error) {
-        return serverInternalError(res);
-    }
+        serverOk(res, newProduct);
+    }, 'update product');
 }
 
 /**
@@ -86,14 +81,12 @@ export const updateProduct = async (req, res) => {
  * @param {Object} res - Objek response untuk dikirim kembali ke client.
  */
 export const getProduct = async(req, res) => {
-    try {
+    await serverProcess(res, async () => {
         const id = req.params.id;
         const product = await Product.findById(id, 'name list_picture price discount stock');
         if (!product) return serverNotFound(res);
-        return serverOk(res, product);
-    } catch (error) {
-        return serverInternalError(res)
-    }
+        serverOk(res, product);
+    }, 'get product by id');
 }
 
 /**
@@ -102,14 +95,12 @@ export const getProduct = async(req, res) => {
  * @param {Object} res - Objek response untuk dikirim kembali ke client.
  */
 export const getProductByBrand = async(req, res) => {
-    try {
-        const brandName = req.params.brand_name;
-        const products = await Product.find({brand: brandName});
+    await serverProcess(res, async () => {
+        const id = req.params.id;
+        const products = await Product.find({brand_id: id});
         if (!products.length) return serverNotFound(res, "No products found for this brand.");
-        return serverOk(res, products);
-    } catch (error) {
-        
-    }
+        serverOk(res, products);
+    }, 'get products by brand');
 }
 
 /**
