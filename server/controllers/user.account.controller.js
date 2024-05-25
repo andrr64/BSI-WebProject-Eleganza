@@ -24,7 +24,7 @@ export const createUser = async (req, res, next) => {
         const hashPassword = bcryptjs.hashSync(password, 10);
         const newUserData = new UserData({});
 
-        const newUser = new UserAccount({ name, email, password: hashPassword, picture: null,data_ref: newUserData._id});
+        const newUser = new UserAccount({ name, email, password: hashPassword,data_ref: newUserData._id});
       
         await newUser.save();
         await newUserData.save();
