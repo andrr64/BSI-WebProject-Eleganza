@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userDataSchema = mongoose.Schema({
+const userDataSchema = new mongoose.Schema({
     cart: {
         type: [String],
         default: []
@@ -9,6 +9,6 @@ const userDataSchema = mongoose.Schema({
         type: [Object],
         default: []
     }
-})
+}, {timestamps: true})
 
 export const UserData = mongoose.model('user_data', userDataSchema);
