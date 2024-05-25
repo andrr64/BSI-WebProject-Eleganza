@@ -1,14 +1,7 @@
 import { Product } from "../models/product.model.js";
 import { serverNotFound, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
 import { serverProcess } from "./server.process.controller.js";
-
-// Kode status untuk validasi data produk
-const NAME_WRONG = 1;
-const PRICE_WRONG = 2;
-const DISCOUNT_WRONG = 3;
-const STOCK_WRONG = 4;
-const PICTURE_EMPTY = 5;
-const BRAND_EMPTY = 6;
+import { MESSAGE, serverLog } from "./server.log.controller.js";
 
 /**
  * Membuat produk baru dan menyimpannya ke dalam database.
@@ -49,28 +42,29 @@ export const createProduct = async (req, res) => {
  */
 export const updateProduct = async (req, res) => {
     await serverProcess(res, async () => {
-        const { name, list_picture, price, discount, stock, collection } = req.body;
-        const filterData = _productDataFilter(name, list_picture, price, discount, stock);
-        if (filterData.code !== 0) return serverBadRequest(res, filterData.message);
-        
+        const { name, brand_id, category, sex, list_size, list_picture, price, discount, stock } = req.body;
         const oldProduct = await Product.findById(req.params.id);
         
         if (oldProduct.hidden === true) return serverNotAcceptable(res);
 
         const newProduct = new Product({
             name: name,
+            brand_id: brand_id,
+            category: category,
+            sex: sex,
+            list_size: list_size,
             list_picture: list_picture,
-            previous_version: req.params.id,
             price: price,
             discount: discount,
             stock: stock,
-            collection: collection,
-            hidden: false
+            hidden: false,
+            previous_version: oldProduct._id
         });
 
         oldProduct.hidden = true;
         await oldProduct.save();
         await newProduct.save();
+        serverLog(MESSAGE.OK);
         serverOk(res, newProduct);
     }, 'update product');
 }
@@ -101,57 +95,4 @@ export const getProductByBrand = async(req, res) => {
         if (!products.length) return serverNotFound(res, "No products found for this brand.");
         serverOk(res, products);
     }, 'get products by brand');
-}
-
-/**
- * Melakukan validasi data produk sebelum penyimpanan.
- * @param {string} name - Nama produk.
- * @param {Array} list_picture - Array gambar produk.
- * @param {number} price - Harga produk.
- * @param {number} discount - Diskon produk.
- * @param {number} stock - Stok produk.
- * @param {string} brand - Merek produk.
- * @returns {Object} Objek yang berisi kode validasi dan pesan kesalahan jika ada.
- */
-const _productDataFilter = (name, list_picture, price, discount, stock, brand) => {
-    if (!name) {
-        return {
-            code: NAME_WRONG,
-            message: 'Name is required!'
-        };
-    }
-    if (!brand) {
-        return {
-            code: BRAND_EMPTY,
-            message: 'Brand is required!'
-        }
-    }
-    if(list_picture.length <= 0){
-        return {
-            code: PICTURE_EMPTY,
-            message: 'Image required min. 1 image'
-        }
-    }
-    if (!price || price <= 0 || price >= 1_000_000_000) {
-        return {
-            code: PRICE_WRONG,
-            message: 'Price must be a positive number or less than 1,000,000,000'
-        };
-    }
-    if (discount < 0 || discount >= 100) {
-        return {
-            code: DISCOUNT_WRONG,
-            message: 'Discount must be between 0 and 100!'
-        };
-    }
-    if (!stock || stock <= 0 || stock >= 1000000) {
-        return {
-            code: STOCK_WRONG,
-            message: 'Stock must be a positive number! or less than 1,000,000'
-        };
-    }
-    return {
-        code: 0,
-        message: 'Product data is valid.'
-    };
 }
