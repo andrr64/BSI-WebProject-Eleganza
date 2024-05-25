@@ -1,6 +1,5 @@
 import { Product } from "../models/product.model.js";
 import { serverNotFound, serverInternalError, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
-import { uploadImages } from "./product.images.controller.js";
 
 // Kode status untuk validasi data produk
 const NAME_WRONG = 1;
@@ -18,8 +17,11 @@ const BRAND_EMPTY = 6;
  */
 export const createProduct = async (req, res, next) => {
     try {
-        const { name, brand, category, sex, list_size, price, discount, stock } = req.body;
-        const files = req.files; // File yang diunggah
+        const { name, brand, category, sex, list_size, list_picture, price, discount, stock } = req.body;
+
+        if (!list_picture){
+            return serverBadRequest(res, 'images is required!');
+        }
 
         // Membuat dan menyimpan produk baru
         const newProduct = new Product({
@@ -28,18 +30,15 @@ export const createProduct = async (req, res, next) => {
             category: category,
             sex: sex,
             list_size: list_size,
+            list_picture: list_picture,
             price: price,
             discount: discount,
             stock: stock,
             hidden: false,
-            previous_version: 'null'
+            previous_version: 'null     '
         });
 
         await newProduct.save();
-
-        // Mengunggah dan menyimpan gambar terkait produk
-        await uploadImages(files, newProduct._id);
-
         return serverOk(res);
     } catch (error) {
         next(error);
