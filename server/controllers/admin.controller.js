@@ -6,7 +6,7 @@
 import bcryptjs from 'bcryptjs'; // Import library bcryptjs untuk melakukan hashing password
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
 import { Admin } from '../models/admin.model.js'; // Import model Admin untuk berinteraksi dengan database
-import { serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
+import { serverNotFound, serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
 import { isTokenValid } from '../security/admin.security.js'; // Import fungsi isTokenValid untuk memeriksa kevalidan token JWT
 
 /*
@@ -31,9 +31,7 @@ export const loginAdmin = async (req, res, next) => {
 
     // Jika akun tidak ditemukan, kirim respons dengan status 404
     if (!account){
-        res.status(404).json(
-            serverResponse(false, 404, 'account not found.')
-        );
+        return serverNotFound(res, 'account not found.');
     }
 
     // Memeriksa apakah password yang diberikan cocok dengan password yang tersimpan di database
@@ -66,11 +64,12 @@ export const loginAdmin = async (req, res, next) => {
     Return: Tidak ada
 */
 export const createAdmin = async (req, res, next) => {
-    const verifyAdmin = await isTokenValid(req.cookies.access_token);
-    if (!verifyAdmin.status){
-        return res.status(verifyAdmin.code).json(verifyAdmin);
-    }
+    console.log(req);
     try {
+        const verifyAdmin = await isTokenValid(req.cookies.access_token);
+        if (!verifyAdmin.status){
+            return res.status(verifyAdmin.code).json(verifyAdmin);
+        }
         const { username, password } = req.body;
 
         // Periksa apakah username dan password tersedia

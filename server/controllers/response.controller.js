@@ -24,7 +24,7 @@ export const serverOk = (res, data) => {
 }
 
 export const serverForbidden = (res) => {
-    return res.status(401).json(serverResponse(false, 401, `Forbidden`))
+    return res.status(401).json(serverResponse(false, 401, `Forbidden: Unauthorized`))
 }
 
 export const serverNotAcceptable = (res) => {
