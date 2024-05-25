@@ -17,6 +17,10 @@ export const homepageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    index: {
+        type: Number,
+        required: true
+    },
     data: {
         type: Schema.Types.Mixed,
         required: true
