@@ -1,5 +1,5 @@
 import { HomepageContent } from "../models/web.homepage.content.model.js";
-import { serverBadRequest, serverForbidden, serverOk } from "./response.controller.js";
+import { serverBadRequest, serverForbidden, serverNotFound, serverOk } from "./response.controller.js";
 import { MESSAGE, serverLog } from "./server.log.controller.js";
 import { isTokenValid } from "../security/admin.security.js";
 
@@ -21,6 +21,7 @@ export const createHomepageContent = async(req, res) => {
         // Membuat item homepage baru
         const newHomepageItem = new HomepageContent({
             title: body.title,
+            index: body.index,
             type: body.type,
             layout_config: body.layout_config,
             data: body.data
@@ -50,7 +51,15 @@ export const getHomepageContent = async(req, res) => {
     serverLog(MESSAGE.STARTOF_REQUEST, 'New request accepted: get web.homepage.content');
     try {
         // Mengambil semua item homepage dari database
-        const homepageItems = await HomepageContent.find({});
+        let homepageItems = await HomepageContent.find({});
+        if (homepageItems.length === 0){ 
+            serverLog(MESSAGE.SENDING);
+            serverNotFound(res);
+            return;
+        }
+
+        // Mengurutkan homepageItems berdasarkan nilai index dari elemen pertama
+        homepageItems = homepageItems.sort((a, b) => a.index - b.index);
 
         // Mengirim respon sukses dengan data yang diambil
         serverOk(res, homepageItems);
@@ -59,7 +68,8 @@ export const getHomepageContent = async(req, res) => {
         serverLog(MESSAGE.FAILURE, error.message);
         serverLog(MESSAGE.SENDING);
         serverBadRequest(res, 'error fetching data');
+    } finally{
+        return serverLog(MESSAGE.ENDOF_REQUEST);
     }
     // Log akhir request
-    return serverLog(MESSAGE.ENDOF_REQUEST);
 }
