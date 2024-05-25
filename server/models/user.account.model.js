@@ -5,6 +5,10 @@ const userAccountSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    data_ref: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true,

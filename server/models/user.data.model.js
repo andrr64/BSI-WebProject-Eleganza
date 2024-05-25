@@ -1,19 +1,13 @@
 import mongoose from "mongoose";
 
 const userDataSchema = mongoose.Schema({
-    user_ref: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    chart: {
+    cart: {
         type: [String],
-        unique: true,
-        required: true
+        default: []
     },
     address: {
-        type: String,
-        required: true
+        type: [Object],
+        default: []
     }
 })
 

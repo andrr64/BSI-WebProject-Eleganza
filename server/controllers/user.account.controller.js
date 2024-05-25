@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import { UserAccount } from '../models/user.account.model.js';
 import { serverBadRequest, serverForbidden, serverNotFound, serverOk, serverResponse, serverInternalError } from './response.controller.js';
 import { newAccountValidation } from '../validation/user.account.validation.js';
-import { MESSAGE, serverLog } from './server.log.controller.js';
 import { serverProcess } from './server.process.controller.js';
+import { UserData } from '../models/user.data.model.js';
 
 /**
  * Membuat akun pengguna baru dalam sistem.
@@ -22,8 +22,12 @@ export const createUser = async (req, res, next) => {
 
         // Enkripsi password sebelum menyimpannya ke database
         const hashPassword = bcryptjs.hashSync(password, 10);
-        const newUser = new UserAccount({ name, email, password: hashPassword, picture: null });
+        const newUserData = new UserData({});
+
+        const newUser = new UserAccount({ name, email, password: hashPassword, picture: null,data_ref: newUserData._id});
+      
         await newUser.save();
+        await newUserData.save();
 
         // Mengirim respons sukses dengan data pengguna yang telah dibuat
         const { password: pass, ...rest } = newUser._doc;
