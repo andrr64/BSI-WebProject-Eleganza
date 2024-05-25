@@ -3,8 +3,7 @@ import { createHomepageContent, getHomepageContent } from "../controllers/web.ho
 
 const router = express.Router();
 
-router.post('/homepage/create', createHomepageContent);
-router.get('/homepage/get', getHomepageContent);
-router.get('/homepage/get/:title')
+router.post('/homepage', createHomepageContent);
+router.get('/homepage', getHomepageContent);
 
 export default router;
