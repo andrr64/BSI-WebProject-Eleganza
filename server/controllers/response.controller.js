@@ -7,7 +7,7 @@ export const serverResponse = (pStatus, code, data= 'OK') => {
 }
 
 export const serverInternalError = (res, msg = '') => {
-    return res.status(500).json(serverResponse(false, 500, `Internal Server Error ${msg}`));
+    return res.status(500).json(serverResponse(false, 500, `Internal Server Error: ${msg}`));
 }
 
 export const serverNotFound = (res) => {    
