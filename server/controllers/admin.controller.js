@@ -64,7 +64,6 @@ export const loginAdmin = async (req, res, next) => {
     Return: Tidak ada
 */
 export const createAdmin = async (req, res, next) => {
-    console.log(req);
     try {
         const verifyAdmin = await isTokenValid(req.cookies.access_token);
         if (!verifyAdmin.status){
