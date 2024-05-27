@@ -1,5 +1,7 @@
 export const ROUTE = {
     homepage: '/',
+    not_found: '/notfound',
+    server_error: '/error',
     man: '/man',
     woman: '/woman',
     children: '/children',
@@ -28,7 +30,6 @@ export function goToAXCollection(a, X){
 export function goToNXCollection(pathArr, x) {
     let url = '/collection';
     for (let i = 0; i < pathArr.length; i++) {
-        console.log(pathArr[i]);
         url = `${url}/${pathArr[i]}`;
     }
     return `${url}/${x}`;

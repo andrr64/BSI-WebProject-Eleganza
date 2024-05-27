@@ -17,3 +17,21 @@ export const serverApiJsonGet = async (api) => {
         }
     })
 }
+
+export const serverConnection = async () => {
+    return await fetch('/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
+export async function getBrandCollection(brandName){
+    return await fetch(`/api/v1/product/get/brand/${brandName}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+}

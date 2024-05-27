@@ -1,0 +1,22 @@
+.background-video {
+    position: relative;
+    width: 100%; /* Lebar 100% dari viewport */
+    height: 100%; /* Tinggi 100% dari viewport */
+  }
+  
+  .video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Pastikan video menutupi seluruh area div */
+  }
+  
+  .content {
+    position: relative; /* Atur posisi relatif agar konten tetap di atas video */
+    z-index: 1; /* Pastikan konten di atas video */
+    padding: 20px;
+    color: white; /* Misalnya warna teks putih agar terlihat di atas video */
+  }
+  

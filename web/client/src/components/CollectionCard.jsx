@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-export function CollectionCard({link, imageUrl, title, extraClassname=null, font=null, height='100vh', fontSize="text-lg lg:text-3xl", width="100%", scaleTransition = true, opacityTransition = true, uppercase=true, titleWithImage=false, titleWithImageWidth = "100%", titleWithImageHeight = "100%", opacity=5}) {
+export function CollectionCard({link, imageUrl, title, extraClassname=null, font=null, height='100vh', fontSize="text-lg lg:text-3xl", width="100%", scaleTransition = true, opacityTransition = true, uppercase=true, titleWithImage=false, titleWithImageWidth = "100%", titleWithImageHeight = "100%"}) {
  
   const getTitle = () => {
     if (titleWithImage !== false){

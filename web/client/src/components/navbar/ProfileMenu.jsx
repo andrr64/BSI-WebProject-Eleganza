@@ -30,23 +30,27 @@ export default function ProfileMenu() {
     showAlert(ALERT.SUCCESS, 'Logout Success')
   }
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+
+  const renderProfilePicture = () => {
+    return (
+      <img
+        alt="Profile Picture"
+        src={user.currentUser.picture}
+        className="w-20 h-20 rounded-full" // Menggunakan kelas-kelas Tailwind CSS untuk mengatur ukuran dan rounded
+      />
+    );
+  };
 
   const getMenu = () => {
     const buildMenuItem = (title, link, icon = false, on_click = () => {}) => {
       return (
         <Link to={link} onClick={on_click}>
-          <li className='flex items-center justify-left px-5 py-2 hover:bg-gray-100 cursor-pointer'>
+          <div className='flex items-center justify-left px-5 py-2 hover:bg-gray-100 cursor-pointer'>
             {icon && (
                 <FontAwesomeIcon className="w-12" icon={icon}/>
             )}
             {title}
-          </li>
+          </div>
         </Link>
       )
     }
@@ -63,18 +67,37 @@ export default function ProfileMenu() {
       return (
         <ul className='py-1'>
           <li>
-            <div className='px-5 py-5'>
-              <h1 className='text-lg md:text-2xl font-bold font-inter'>{user.currentUser.name}</h1>
-              <p>{user.currentUser.email}</p>
+            <div className='pb-5 pt-5'>
+              <div className='flex justify-center'>
+                {renderProfilePicture()}
+              </div>
+              <div className='mx-8 text-center mt-2'>
+                <h1 className='text-lg md:text-2xl font-bold font-inter'>{user.currentUser.name}</h1>
+                <p>{user.currentUser.email}</p>
+              </div>
             </div>
           </li>
-          {buildMenuItem('Pengaturan Akun', ROUTE.user.account, faGear)}
-          {buildMenuItem('Transaksi Ku', ROUTE.user.transactions, faReceipt)}
-          {buildMenuItem('Keluar', '', faDoorOpen, handleSignOut)}
+          <li className='pt-5'>
+            <hr />
+            <div className='grid grid-cols-1 divide-y items-center'>
+              {buildMenuItem('Pengaturan Akun', ROUTE.user.account, faGear)}
+              {buildMenuItem('Transaksi Ku', ROUTE.user.transactions, faReceipt)}
+              {buildMenuItem('Keluar', '', faDoorOpen, handleSignOut)}
+            </div>
+            <hr />
+          </li>
+
         </ul>
       )
     }
   }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="w-full cursor-pointer relative inline-block" ref={menuRef}>
