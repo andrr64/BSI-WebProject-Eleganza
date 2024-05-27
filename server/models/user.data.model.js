@@ -8,6 +8,10 @@ const userDataSchema = new mongoose.Schema({
     address: {
         type: [Object],
         default: []
+    },
+    user_ref: {
+        type: String,
+        required: true
     }
 }, {timestamps: true})
 
