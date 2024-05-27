@@ -55,9 +55,13 @@ app.use('/api/v1/brand', API_brandRoute);
 app.use('/api/v1/chat', API_chat);
 
 // Handler untuk rute "catchall": mengirimkan file index.html dari aplikasi React
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
+app.get('/admin', (req, res) => {
+  serverOk(res);
+})
+
 
 // Middleware untuk penanganan error
 app.use((err, req, res, next) => {
