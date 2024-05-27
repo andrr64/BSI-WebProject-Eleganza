@@ -45,7 +45,7 @@ export const createUser = async (req, res, next) => {
         // Mengirim respons sukses dengan data pengguna yang telah dibuat
         const { password: pass, ...rest } = newUser._doc;
         serverOk(res, rest);
-    }, 'create user', next);
+    }, 'create user');
 };
 
 /**
@@ -78,7 +78,7 @@ export const loginUser = async (req, res, next) => {
             .status(200)
             .cookie('access_token', token, { httpOnly: true })
             .json(serverResponse(true, 200, { user: rest }));
-    }, 'login user', next);
+    }, 'login user');
 };
 
 /**
@@ -96,5 +96,21 @@ export const isTokenOk = async (req, res, next) => {
             if (err) return serverForbidden(res, 'Invalid or expired token');
             serverOk(res, 'Token accepted');
         });
-    }, 'is token ok', next);
+    }, 'is token ok');
 };
+
+export const validateClientToken = async (token) => {
+    console.log(token);
+    if (!token) throw new Error('Empty Token');
+    try {
+        await jwt.verify(token, process.env.JWT_SECRET);
+        return true; // Token valid
+    } catch (err) {
+        return false; // Token tidak valid
+    }
+};
+
+export const isUserExist = async(user_id) => {
+    const user = await UserAccount.findById(user_id);
+    return user;
+}
