@@ -1,7 +1,7 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserAccount } from '../models/user.account.model.js';
-import { serverBadRequest, serverForbidden, serverNotFound, serverOk, serverResponse, serverInternalError } from './response.controller.js';
+import { serverBadRequest, serverForbidden, serverNotFound, serverOk, serverResponse } from './response.controller.js';
 import { newAccountValidation } from '../validation/user.account.validation.js';
 import { serverProcess } from './server.process.controller.js';
 import { UserData } from '../models/user.data.model.js';
@@ -15,18 +15,31 @@ import { UserData } from '../models/user.data.model.js';
 export const createUser = async (req, res, next) => {
     await serverProcess(res, async () => {
         const { name, email, password } = req.body;
-        
+
         // Validasi data akun baru
         const validation = await newAccountValidation(name, email, password);
         if (validation !== true) return serverBadRequest(res, validation);
 
-        // Enkripsi password sebelum menyimpannya ke database
-        const hashPassword = bcryptjs.hashSync(password, 10);
-        const newUserData = new UserData({});
+        // Pengecekan duplikasi email
+        const existingUser = await UserAccount.findOne({ email });
+        if (existingUser) {
+            return serverBadRequest(res, 'Email already exists');
+        }
 
-        const newUser = new UserAccount({ name, email, password: hashPassword,data_ref: newUserData._id});
-      
+        // Enkripsi password sebelum menyimpannya ke database
+        const hashPassword = await bcryptjs.hash(password, 10);
+        
+        // Inisialisasi data pengguna baru
+
+        const newUser = new UserAccount({
+             name, 
+             email, 
+             password: hashPassword
+        }
+        );
         await newUser.save();
+
+        const newUserData = new UserData({user_ref: newUser._id});
         await newUserData.save();
 
         // Mengirim respons sukses dengan data pengguna yang telah dibuat
