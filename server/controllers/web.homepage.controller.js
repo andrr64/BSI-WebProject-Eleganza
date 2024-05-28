@@ -80,9 +80,8 @@ export const getContentByTitle = async(req, res) => {
         const {title} = req.params;
         console.log(title);
         const data = await HomepageContent.findOne({content: title});
-        if (data){
-            serverOk(res, data);
-        }
-        serverNotFound(res);
+        if (!data)
+            return serverNotFound(res);
+        serverOk(res, data);
     }, 'get content by title');
 }

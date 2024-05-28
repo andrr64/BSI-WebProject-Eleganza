@@ -1,12 +1,17 @@
 import Content from "./Content";
+import ServerError from "./ServerError";
 
-export  default  function Page(is_loading, server_status, render_function){
-    if (is_loading){
-      return (
-        <div className="my-20">
-          x
-        </div>
-      )
-    } 
-    return <Content main={render_function()}/>;
+export  default  function Page(loading, server_status, render_function){
+  if (loading && server_status){
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        x
+      </div>
+    )
+  } 
+
+  else if (!server_status && !loading){
+    return <ServerError/>;  
   }
+  return <Content main={render_function()}/>;
+}
