@@ -53,6 +53,9 @@ app.use('/api/v1/admin', API_adminRoute);
 app.use('/api/v1/web', API_webRoute);
 app.use('/api/v1/brand', API_brandRoute);
 app.use('/api/v1/chat', API_chat);
+app.get('/status', (req, res) => {
+  return serverOk(res);
+})
 
 // Handler untuk rute "catchall": mengirimkan file index.html dari aplikasi React
 app.get('/', (req, res) => {
@@ -72,7 +75,7 @@ app.use((err, req, res, next) => {
 
 // Mulai server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0' , () => {
   console.log('-----------------------------');
   console.log(`Eleganza Server ${vers}`);
   console.log(`Port: ${PORT}`);
