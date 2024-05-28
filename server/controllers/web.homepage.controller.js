@@ -2,6 +2,7 @@ import { HomepageContent } from "../models/web.homepage.content.model.js";
 import { serverBadRequest, serverForbidden, serverNotFound, serverOk } from "./response.controller.js";
 import { MESSAGE, serverLog } from "./server.log.controller.js";
 import { isTokenValid } from "../security/admin.security.js";
+import { serverProcess } from "./server.process.controller.js";
 
 /**
  * Membuat konten homepage baru dan menyimpannya ke dalam database.
@@ -72,4 +73,16 @@ export const getHomepageContent = async(req, res) => {
         return serverLog(MESSAGE.ENDOF_REQUEST);
     }
     // Log akhir request
+}
+
+export const getContentByTitle = async(req, res) => {
+    await serverProcess(res, async ()=>{
+        const {title} = req.params;
+        console.log(title);
+        const data = await HomepageContent.findOne({content: title});
+        if (data){
+            serverOk(res, data);
+        }
+        serverNotFound(res);
+    }, 'get content by title');
 }
