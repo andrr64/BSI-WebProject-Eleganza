@@ -1,5 +1,5 @@
 import { UserAccount } from "../models/user.account.model.js";
-import { isValidEmail } from "./utility/string_validator.js";
+import { isValidEmail } from "./string_validator.js";
 
 export const newAccountValidation = async (name, email, password) => {
     if (!name) return 'empty name';
