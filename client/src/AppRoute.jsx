@@ -1,7 +1,9 @@
 export const ROUTE = {
     homepage: '/',
     not_found: '/notfound',
-    server_error: '/error',
+    server: {
+        error: '/error'
+    },
     man: '/man',
     woman: '/woman',
     children: '/children',
@@ -10,9 +12,12 @@ export const ROUTE = {
         signup: '/user/signup',
         profile: '/user/profile'
     },
-    collection_brand: '/collection/brand/:brand_name',
-    collection_gender: '/collection/gender/:gender',
-    collection_category: '/collection/category/:category',
+    collection: {
+        brand: '/collection/brand/:brand_name',
+        category: '/collection/category/:category',
+        gender: '/collection/gender/:gender',
+
+    },
 }
 
 export function goToCollection(collectionName){
