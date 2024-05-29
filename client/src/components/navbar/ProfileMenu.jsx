@@ -30,7 +30,6 @@ export default function ProfileMenu() {
     showAlert(ALERT.SUCCESS, 'Logout Success')
   }
 
-
   const renderProfilePicture = () => {
     return (
       <img
@@ -72,7 +71,9 @@ export default function ProfileMenu() {
                 {renderProfilePicture()}
               </div>
               <div className='mx-8 text-center mt-2'>
-                <h1 className='text-lg md:text-2xl font-bold font-inter'>{user.currentUser.name}</h1>
+                <h1 className='text-lg md:text-2xl font-bold font-inter'>
+                  {user.currentUser.name}
+                </h1>
                 <p>{user.currentUser.email}</p>
               </div>
             </div>
@@ -86,7 +87,6 @@ export default function ProfileMenu() {
             </div>
             <hr />
           </li>
-
         </ul>
       )
     }
@@ -102,7 +102,10 @@ export default function ProfileMenu() {
   return (
     <div className="w-full cursor-pointer relative inline-block" ref={menuRef}>
       <div onClick={handleIconClick}>
-        <FontAwesomeIcon icon={faUser} size='lg' />
+        { user !== null? 
+          (<FontAwesomeIcon icon={faUser} size='lg' />) :
+          <img src={user.picture} />
+        }
       </div>
       {isMenuOpen && (
         <div className="text-black absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded shadow-lg">
