@@ -1,14 +1,9 @@
 export const isServerOnline = async() => {
-    const res = await fetch(`/status}`, {
-        method: 'GET',
-        headers: {
-              'Content-Type': 'application/json',
-        },
-    });
-    return res.status;
+    const res = await serverApiJsonGet('/status');
+    return res.status !== 500;
 }
 
-export const serverApiJsonPost = async (api, body) => {
+export const serverApiJsonPost = async (api, body = {}) => {
     const res = await fetch(`/api/v1${api}`, {
         method: 'POST',
         headers: {

@@ -13,7 +13,7 @@ export const ROUTE = {
         profile: '/user/profile'
     },
     collection: {
-        brand: '/collection/brand/:brand_name',
+        brand: '/collection/brand/:name',
         category: '/collection/category/:category',
         gender: '/collection/gender/:gender',
 
