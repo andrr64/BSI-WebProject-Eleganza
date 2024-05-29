@@ -1,5 +1,5 @@
 import { Brand } from "../models/brand.model.js";
-import { serverNotFound, serverOk, serverBadRequest, serverInternalError } from "./response.controller.js";
+import { serverNotFound, serverOk, serverBadRequest, serverInternalError, serverCreatedOk } from "./response.controller.js";
 import { MESSAGE, serverLog } from "./server.log.controller.js";
 import { serverProcess } from "./server.process.controller.js";
 
@@ -13,7 +13,7 @@ export const createBrand = async (req, res) => {
         const { title, icon, description } = req.body;
         const newBrand = new Brand({ title, icon, description });
         await newBrand.save();
-        serverOk(res, 'Brand created successfully');
+        serverCreatedOk(res, 'Brand created successfully');
     }, 'create brand');
 };
 
