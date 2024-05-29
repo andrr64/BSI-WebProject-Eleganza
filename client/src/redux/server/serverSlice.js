@@ -9,19 +9,27 @@ const serverSlice = createSlice({
     name: 'server',
     initialState,
     reducers: {
-        serverLoading: (state) => {
+        serverLoading: (state, action) => {
             state.loading = true;
-            state.status = true;
+            state.status = action.payload;
         },
         serverFailure: (state) => {
             state.loading = false;
             state.status = false;
+        },
+        serverLoadingOk: (state) => {
+            state.loading = false;
+        },
+        serverOk: (state) => {
+            state.status = true;
         }
     }
 });
 
 export const {
     serverLoading,
-    serverFailure
+    serverFailure,
+    serverLoadingOk,
+    serverOk
 } = serverSlice.actions;
 export default serverSlice.reducer;
