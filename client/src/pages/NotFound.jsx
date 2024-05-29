@@ -8,8 +8,9 @@ export default function NotFound() {
           <p className="text-4xl font-bold">404</p>
           <p className="text-lg mt-4">Page not found</p>
             <button 
-            className="my-4 hover:scale-105 transition bg-black text-white rounded-lg py-2 px-4"
-            onClick={() => navigator('/')}>
+              className="my-4 bg-black text-white rounded-md py-2 px-4"
+              onClick={() => navigator('/')}
+            >
                 Back to home
             </button>
         </div>
