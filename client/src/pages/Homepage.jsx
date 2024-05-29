@@ -59,7 +59,7 @@ function Homepage() {
   const mainContent = () => {
     return (
       <>
-        <section id="content" className={`mx-20 my-20 $ ${loading? 'h-screen' : ''}`}>
+        <section id="content" className={`mx-10 my-20 $ ${loading? 'h-screen' : ''}`}>
           <Section 
             id={"merek-unggulan"} 
             title={kontenMerekUnggulan.title} 
