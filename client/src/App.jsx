@@ -10,6 +10,7 @@ import CollectionCategory from "./pages/collection/Category";
 import CollectionGender from "./pages/collection/Gender";
 import CollectionBrand from "./pages/collection/Brand";
 import ServerError from "./pages/ServerError";
+import ProductPage from "./pages/product/ProductPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path={ROUTE.collection.brand} element={<CollectionBrand />} />
         <Route path={ROUTE.collection.gender} element={<CollectionGender />} />
         <Route path={ROUTE.collection.category} element={<CollectionCategory />} />
+        <Route path={ROUTE.product.detail} element={<ProductPage />} />
         <Route path={ROUTE.server.error} element={<ServerError />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/experiment" element={<Experiment />} />

@@ -7,6 +7,9 @@ export const ROUTE = {
     man: '/man',
     woman: '/woman',
     children: '/children',
+    product: {
+        detail: '/product/detail/:id'
+    },
     user: {
         signin: '/user/signin',
         signup: '/user/signup',
@@ -38,4 +41,8 @@ export function goToNXCollection(pathArr, x) {
         url = `${url}/${pathArr[i]}`;
     }
     return `${url}/${x}`;
+}
+
+export function goToProductDetail(id) {
+    return `/product/detail/${id}`;
 }
