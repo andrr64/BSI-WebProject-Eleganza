@@ -4,7 +4,6 @@
 */
 import { configureStore, combineReducers } from "@reduxjs/toolkit"; // Import fungsi-fungsi yang diperlukan dari Redux Toolkit
 import userReducer from "./user/userSlice.js"; // Import reducer untuk pengelolaan state pengguna (user)
-import serverReducer from "./server/serverSlice.js";
 
 import { persistReducer } from "redux-persist"; // Import fungsi persistReducer untuk konfigurasi penyimpanan persisten state Redux
 import storage from "redux-persist/lib/storage"; // Import modul penyimpanan persisten untuk Redux
@@ -13,7 +12,6 @@ import persistStore from "redux-persist/es/persistStore"; // Import fungsi persi
 // Menggabungkan semua reducer menjadi satu root reducer
 const rootReducer = combineReducers({
     user: userReducer,
-    server: serverReducer
 });
 
 // Konfigurasi untuk penyimpanan persisten Redux
