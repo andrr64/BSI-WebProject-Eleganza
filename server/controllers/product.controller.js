@@ -1,7 +1,8 @@
 import { Product } from "../models/product.model.js";
-import { serverNotFound, serverBadRequest, serverOk, serverNotAcceptable } from "../controllers/response.controller.js";
+import { serverNotFound, serverBadRequest, serverOk, serverNotAcceptable, serverCreatedOk } from "../controllers/response.controller.js";
 import { serverProcess } from "./server.process.controller.js";
 import { MESSAGE, serverLog } from "./server.log.controller.js";
+import { Brand } from "../models/brand.model.js";
 
 /**
  * Membuat produk baru dan menyimpannya ke dalam database.
@@ -29,9 +30,10 @@ export const createProduct = async (req, res) => {
             hidden: false,
             previous_version: 'null'
         });
-
+        const brand = await Brand.findById(brand_id);
+        if (!brand) return serverBadRequest(res, 'brand not found');
         await newProduct.save();
-        serverOk(res);
+        serverCreatedOk(res);
     }, 'create product');
 }
 
