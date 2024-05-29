@@ -43,6 +43,16 @@ export const getBrandById = async (req, res) => {
     }, 'get brand by id');
 };
 
+export const getBrandByName = async (req, res) => {
+    await serverProcess(res, async () => {
+        // Menggunakan regex untuk pencarian case-insensitive
+        const brand = await Brand.findOne({ title: { $regex: new RegExp(`^${req.params.name}$`, 'i') } });
+        if (!brand) return serverNotFound(res);
+        serverOk(res, brand);
+    }, 'get brand by name');
+};
+
+
 /**
  * Mengupdate brand yang ada di database berdasarkan ID.
  * @param {Object} req - Objek request dari client.
