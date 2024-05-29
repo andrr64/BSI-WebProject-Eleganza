@@ -12,6 +12,7 @@ const _loadingAnimation = () => {
       preserveAspectRatio: "xMidYMid slice"
     }
   }
+  
   return (
     <div className="w-screen mt-5 h-screen flex items-center justify-center">
       <div className="w-28 md:w-52">
@@ -22,10 +23,7 @@ const _loadingAnimation = () => {
 }
 
 export  default function Page(loading, server_status, render_function, nav, footer){
-  if (loading && server_status){
-    return _loadingAnimation();
-  } else if (!server_status){
+  if (!server_status)
     return <ServerError/>;  
-  }
-  return <Content nav={nav} footer={footer} main={render_function()}/>;
+  return <Content nav={nav} footer={footer && !loading} main={(loading && server_status? _loadingAnimation() : render_function())}/>;
 }
