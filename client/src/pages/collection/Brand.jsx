@@ -1,22 +1,47 @@
-import { useEffect } from "react";
-import Footer from "../../components/Footer"
-import NavigationBar from "../../components/navbar/NavigationBar"
-import { scrollToZero } from "../../utility/ScrollToZero"
+import { useEffect, useState } from "react";
+import { scrollToZero } from "../../utility/ScrollToZero";
+import { useParams } from "react-router-dom";
+import { isServerOnline, serverApiJsonGet } from "../../api/API";
+import { delay } from "../../utility/Delay";
+import Page from "../RenderPage";
+import ProductCard from "../../components/cards/ProductCard";
 
 function CollectionBrand() {
-  useEffect(() => {
-    scrollToZero();
-  }, [])
-  
-  return (
-    <>
-      <NavigationBar/>
-      <section id="content" className="my-20 h-screen">
+  const params = useParams();
+  const [loading, setLoading] = useState(true);
+  const [serverStatus, setServerStatus] = useState(true);
+  const [products, setProducts] = useState([]);
 
-      </section>
-      <Footer/>
-    </>
-  )
+  const mainContent = () => (
+    <section id="content" className={`mx-10 my-20 py-10 lg:py-5 lg:mx-20 ${loading? 'h-screen' : ''}`}>
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-5">
+          {products.map((item, index) => {
+            return <ProductCard key={index} data={item}/>
+          })}
+        </section>
+    </section>  
+  );
+
+  useEffect(() => {
+    const getContent = async () => {
+      try {
+        setLoading(true);
+        if (!(await isServerOnline())) return setServerStatus(false);
+        const res = await (await serverApiJsonGet(`/brand/name/${params.name}`)).json();
+        const _products = await (await serverApiJsonGet(`/product/brand/${res.data._id}`)).json();
+        setProducts(_products.data);
+        await delay(500);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    scrollToZero();
+    getContent();
+  }, [params.name]); // Tambahkan params.name ke dalam array dependensi
+
+  return Page(loading, serverStatus, mainContent,true, false);
 }
 
-export default CollectionBrand
+export default CollectionBrand;
