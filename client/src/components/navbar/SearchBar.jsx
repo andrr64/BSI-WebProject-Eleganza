@@ -5,7 +5,7 @@ const SearchBar = () => {
   return (
     <div>
       <button>
-        <FontAwesomeIcon icon={faSearch} color="white" size="lg"/>
+        <FontAwesomeIcon icon={faSearch} color="black" size="lg"/>
       </button>
     </div>
   );
