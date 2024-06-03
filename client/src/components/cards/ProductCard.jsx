@@ -5,13 +5,16 @@ import { formatRupiah } from "../../utility/Format"
 /* eslint-disable react/prop-types */
 function ProductCard({data}) {
     return (
-        <div className="w-3/12 border grid-cols cols-1">
+        <div className="grid-cols cols-1 border w-full">
             <Link to={goToProductDetail(data._id)}>
                 <img className="h-10/12 w-full object-cover" src={data.list_picture[0]} alt={`Picture of ${data.name}`} />
             </Link>
             <div className="text-center py-5">
+                <Link to={'/'}>
+                    <p className="text-center font-inter-light mb-2 uppercase">{data.category}</p>  
+                </Link>
                 <p className="font-inter font-bold">{data.name}</p>
-                <p className="font-inter uppercase">{formatRupiah(data.price)}</p>
+                <p className="font-inter uppercase text-lg">{formatRupiah(data.price)}</p>
             </div>
             <Link>
                 <div className="text-center mb-5">
