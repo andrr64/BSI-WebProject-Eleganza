@@ -6,7 +6,7 @@
 import bcryptjs from 'bcryptjs'; // Import library bcryptjs untuk melakukan hashing password
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
 import { Admin } from '../models/admin.model.js'; // Import model Admin untuk berinteraksi dengan database
-import { serverNotFound, serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
+import { serverForbidden, serverNotFound, serverOk, serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
 import { isTokenValid } from '../security/admin.security.js'; // Import fungsi isTokenValid untuk memeriksa kevalidan token JWT
 
 /*
@@ -38,17 +38,14 @@ export const loginAdmin = async (req, res, next) => {
     const passwordIsValid = bcryptjs.compareSync(password, account.password);
 
     // Jika password tidak cocok, kirim respons dengan status 401
-    if (!passwordIsValid){
-        res.status(401).json(
-            serverResponse(false, 401, 'wrong credentials!')
-        );
-    }
+    if (!passwordIsValid)
+        return serverForbidden(res);
 
     // Jika login berhasil, menghasilkan token JWT
     const token = jwt.sign({ username: username }, process.env.JWT_ADMIN_SECRET, { expiresIn: '1h' });
     
     // Kirim respons sukses dengan token JWT
-    res
+    return res
         .status(200)
         .cookie('access_token', token, {httpOnly: true})
         .json(serverResponse(true,200));
