@@ -1,5 +1,10 @@
-export const isServerOnline = async() => {
-    const res = await serverApiJsonGet('/status');
+export const    isServerOnline = async() => {
+    const res = await fetch(`/status`, {
+        method: 'GET',
+        headers: {
+              'Content-Type': 'application/json',
+        },
+    });
     return res.status !== 500;
 }
 
@@ -39,4 +44,13 @@ export async function getBrandCollection(brandName){
             'Content-Type': 'application/json'
         }
     });
+}
+
+export async function getProductById(id){
+    return await(await fetch(`/api/v1/product/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })).json();
 }
