@@ -10,7 +10,7 @@ import CollectionCategory from "./pages/collection/Category";
 import CollectionGender from "./pages/collection/Gender";
 import CollectionBrand from "./pages/collection/Brand";
 import ServerError from "./pages/ServerError";
-import ProductPage from "./pages/product/ProductPage";
+import ProductPage from "./pages/product/Detail";
 
 function App() {
   return (
