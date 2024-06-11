@@ -79,9 +79,10 @@ export const updateProduct = async (req, res) => {
 export const getProduct = async(req, res) => {
     await serverProcess(res, async () => {
         const id = req.params.id;
-        const product = await Product.findById(id, 'name list_picture price discount stock');
+        const product = await Product.findById(id);
+        const brand = await Brand.findById(product.brand_id);
         if (!product) return serverNotFound(res);
-        serverOk(res, product);
+        serverOk(res, {'product': product, 'brand': brand});
     }, 'get product by id');
 }
 
