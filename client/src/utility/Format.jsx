@@ -11,5 +11,5 @@ export function formatRupiah(amount) {
     let rupiahFormatted = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
     // Gabungkan bagian desimal kembali
-    return 'Rp ' + rupiahFormatted + decimalPart;
+    return 'IDR ' + rupiahFormatted + decimalPart;
 }
