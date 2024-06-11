@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -114,10 +114,13 @@ const SignIn = () => {
       <div id="form" className="font-inter flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <Link to={'/'} className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-bold text-sm">
+            <button 
+              onClick={() => navigate(-1)} 
+              className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-bold text-sm"
+            >
               <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
-              <p>Kembali ke beranda</p>
-            </Link>
+              <p>Kembali</p>
+            </button>
             <div>
               <h1 className="my-10 text-center font-laBelle text-5xl my-6 text-black">
                 Eleganza
