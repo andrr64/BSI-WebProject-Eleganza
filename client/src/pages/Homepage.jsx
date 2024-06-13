@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { serverApiJsonGet, isServerOnline } from "../api/API";
 import { goToNXCollection } from "../AppRoute";
 import { scrollToZero } from "../utility/ScrollToZero";
-import { delay } from "../utility/Delay";
 import Page from "./RenderPage";
 
 function Title ({judul}){
@@ -98,7 +97,6 @@ function Homepage() {
         setKontenMerekUnggulan(merek_unggulan.data);
         setKontentKategori(kategori.data);
         setKontenGender(gender.data);
-        await delay(500);
       } catch (error) {
         console.log(error.message);
       } finally {

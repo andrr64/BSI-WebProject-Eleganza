@@ -15,9 +15,9 @@ const _loadingAnimation = () => {
   
   return (
     <div className="w-screen mt-5 h-screen flex items-center justify-center">
-      <div className="w-28 md:w-52">
+      {/* <div className="w-28 md:w-52">
         <Lottie options={lottie_loading_opt}/>
-      </div>
+      </div> */}
     </div>
   )
 }

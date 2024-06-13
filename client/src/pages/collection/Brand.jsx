@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { scrollToZero } from "../../utility/ScrollToZero";
 import { useParams } from "react-router-dom";
 import { isServerOnline, serverApiJsonGet } from "../../api/API";
-import { delay } from "../../utility/Delay";
 import Page from "../RenderPage";
 import ProductCard from "../../components/cards/ProductCard";
 
@@ -30,7 +29,6 @@ function CollectionBrand() {
         const res = await (await serverApiJsonGet(`/brand/name/${params.name}`)).json();
         const _products = await (await serverApiJsonGet(`/product/brand/${res.data._id}`)).json();
         setProducts(_products.data);
-        await delay(500);
       } catch (error) {
         console.log(error);
       } finally {
