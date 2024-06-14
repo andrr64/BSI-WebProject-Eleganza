@@ -12,7 +12,7 @@ function CollectionBrand() {
   const [products, setProducts] = useState([]);
 
   const mainContent = () => (
-    <section id="content" className={`mx-10 my-20 py-10 lg:py-5 lg:mx-20 ${loading? 'h-screen' : ''}`}>
+    <section id="content" className={`mx-10 my-20 py-10 lg:py-5 lg:mx-20`}>
         <section className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {products.map((item, index) => {
             return <ProductCard key={index} data={item}/>
