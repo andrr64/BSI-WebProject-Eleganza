@@ -9,14 +9,17 @@ import { formatRupiah } from "../../utility/Format";
 import { Link } from "react-router-dom";
 import { goToBrandCollection } from "../../AppRoute";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faS, faStarHalf } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 function ProductPage() {
   const params = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [serverStatus, setServerStatus] = useState(true);
   const [data, setData] = useState();
-  const navigate = useNavigate();
+  const [pictureIndex, setPictureIndex] = useState(0);
+  const [sizeIndex, setSizeIndex] = useState(null);
 
   const mainContent = () => {
     return (
@@ -45,37 +48,43 @@ function ProductPage() {
     )
   }
 
+  const UI_productRating = ({ rating=0, totalReviews }) => {
+    return (
+      <div className="flex gap-5">
+        <div className="rating-container">
+          {[...Array(5)].map((val, index) => (
+            <FontAwesomeIcon key={index} icon={faStar} size="xl" color="#ffe234"/>  
+          ))}      
+        </div>
+        <div className="text-gray-500 font-bold">
+          Belum ada ulasan
+        </div>
+      </div>
+    );
+  };
+
   const UI_productImages = () => {
     return (
       <div className="w-full lg:sticky top-0 text-center">
         <div className="lg:h-[600px]">
           <img
-            src={data.product.list_picture[0]}
+            src={data.product.list_picture[pictureIndex]}
             alt="Product"
             className="lg:w-11/12 w-full h-full rounded-xl object-cover object-top"
           />
         </div>
-        <div className="flex flex-wrap gap-x-8 gap-y-6 justify-center mx-auto mt-4">
-          <img
-            src="https://readymadeui.com/images/product6.webp"
-            alt="Product1"
-            className="w-20 cursor-pointer rounded-xl outline"
-          />
-          <img
-            src="https://readymadeui.com/images/product8.webp"
-            alt="Product2"
-            className="w-20 cursor-pointer rounded-xl"
-          />
-          <img
-            src="https://readymadeui.com/images/product5.webp"
-            alt="Product3"
-            className="w-20 cursor-pointer rounded-xl"
-          />
-          <img
-            src="https://readymadeui.com/images/product7.webp"
-            alt="Product4"
-            className="w-20 cursor-pointer rounded-xl"
-          />
+        <div className="flex flex-wrap my-5 gap-x-8 gap-y-6 justify-center mx-auto mt-4">
+          {
+            data.product.list_picture.map((val, index) => (
+              <img 
+                src={val} 
+                alt="" 
+                key={index} 
+                onClick={() => setPictureIndex(index)} 
+                className={`w-20 cursor-pointer rounded-xl transition hover:scale-105 ease-in-out duration-250 ${pictureIndex === index ? 'outline outline-4 outline-indigo' : ''}`}
+              />
+            ))
+          }
         </div>
       </div>
     );
@@ -145,10 +154,11 @@ function ProductPage() {
             </button>
           </div>
         </div>
-        <div className="flex items-baseline space-x-2 mt-4">
+        <div className="flex items-baseline space-x-2 my-4">
           <p className="text-3xl font-semibold text-black">{formatRupiah(data.product.price)}</p>
           <span className="px-2 py-1 text-sm rounded-full bg-green-100 text-green-800">In stock</span>
         </div>
+        <UI_productRating/>
         <div className="my-6">
           <p className="text-base text-gray-500">
             Laborum magna nulla aute sit elit elit magna reprehenderit tempor incididunt. Dolor veniam dolore amet non deserunt occaecat excepteur et ad velit consequat. Irure magna sunt occaecat nisi tempor incididunt anim occaecat nostrud est esse in.
@@ -163,11 +173,12 @@ function ProductPage() {
       <div className="mb-5">
         <p className="font-semibold text-gray-800">Gender</p>
         <div className="mt-3">
-          <p className="p-1 border rounded-lg inline text-gray-600">{data.product.sex}</p>
+          <p className="p-1 border rounded-lg inline px-3 text-gray-600">{data.product.sex}</p>
         </div>
       </div>
     )
   }
+  
   const UI_productSizeSelector = () => {
     if (data.product.list_size.length === 0){
       return (
@@ -178,7 +189,7 @@ function ProductPage() {
       <div>
         <h2 className="text-base text-gray-800 font-semibold">Select size</h2>
         <div className="flex flex-wrap gap-2 mt-3">
-          {data.product.list_size.map((size) => (
+          {data.product.list_size.map((size, index) => (
             <label
               key={size}
               className="w-8 h-8 text-gray-600 cursor-pointer relative"
@@ -190,7 +201,7 @@ function ProductPage() {
                 id={`size-${size.toLowerCase()}`}
                 className="hidden peer"
               />
-              <span className="w-full h-full rounded-md border border-gray-200 flex items-center justify-center text-xs peer-checked:bg-blue-600 peer-checked:text-white">
+              <span className="w-full h-full rounded-md border border-gray-200 flex items-center justify-center text-sm  peer-checked:bg-blue-600 peer-checked:text-white">
                 {size}
               </span>
             </label>
