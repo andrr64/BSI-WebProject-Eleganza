@@ -100,11 +100,10 @@ export default function ProfileMenu() {
   }, []);
 
   return (
-    <div className="w-full cursor-pointer relative inline-block" ref={menuRef}>
+    <div className="cursor-pointer text-center relative inline-block" ref={menuRef}>
       <div onClick={handleIconClick}>
-        { user !== null? 
-          (<FontAwesomeIcon icon={faUser} size='lg' />) :
-          <img src={user.picture} />
+        { user.currentUser !== null? 
+          <img src={user.currentUser.picture} className='w-8 rounded-full avatar' /> : (<FontAwesomeIcon icon={faUser} size='lg' />)
         }
       </div>
       {isMenuOpen && (
