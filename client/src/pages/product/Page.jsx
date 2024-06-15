@@ -23,23 +23,21 @@ function ProductPage() {
   const [sizeIndex, setSizeIndex] = useState(0);
 
   const UI_backButton = () => (
-    <div className="mb-4 mt-1">
-            <button 
-              onClick={() => navigate(-1)} 
-              className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-medium text-l"
-            >
-              <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
-              <p>Kembali</p>
-            </button>
-          </div>
+    <button 
+      onClick={() => navigate(-1)} 
+      className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-medium text-l"
+    >
+      <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
+      <p>Kembali</p>
+    </button>
   )
 
   const renderContent = () => {
     return (
-      <div className="py-5 h-screen font-inter text-gray-800">
-        <div className="my-10 container mx-auto p-8 lg:w-10/12">
+      <div className="py-10 h-screen font-inter text-gray-800">
+        <div className="my-8 container mx-auto p-8 lg:w-10/12">
           <UI_backButton/>
-          <div className="lg:grid lg:grid-cols-2 lg:items-start my-10">
+          <div className="lg:grid lg:grid-cols-2 lg:items-start my-5">
             <ProductImages images={data.product.list_picture} imageIndex={pictureIndex} callback={setPictureIndex} />
             <div>
               <ProductDescription product={data.product} brand={data.brand}/>
