@@ -1,16 +1,17 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
-import Page from "../RenderPage";
 import { scrollToZero } from "../../utility/ScrollToZero";
-import { getProductById, isServerOnline, serverApiJsonGet } from "../../api/API";
-import React from 'react';
-import { formatRupiah } from "../../utility/Format";
-import { Link } from "react-router-dom";
-import { goToBrandCollection } from "../../AppRoute";
+import { getProductById, isServerOnline } from "../../api/API";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faS, faStarHalf } from "@fortawesome/free-solid-svg-icons";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import Page from "../RenderPage";
+import React from 'react';
+import Reviews from "./components/Reviews";
+import ProductImages from "./components/Images";
+import ProductDescription from "./components/Description";
+import ProductSizeSelector from "./components/SizeSelector";
+import ProductGender from "./components/Gender";
+import ProductActions from "./components/Actions";
 
 function ProductPage() {
   const params = useParams();
@@ -19,14 +20,11 @@ function ProductPage() {
   const [serverStatus, setServerStatus] = useState(true);
   const [data, setData] = useState();
   const [pictureIndex, setPictureIndex] = useState(0);
-  const [sizeIndex, setSizeIndex] = useState(null);
+  const [sizeIndex, setSizeIndex] = useState(0);
 
-  const mainContent = () => {
-    return (
-      <div className="py-5 h-screen font-inter text-gray-800">
-        <div className="my-10 container mx-auto p-8">
-          <div className="mb-4 mt-1">
-          <button 
+  const UI_backButton = () => (
+    <div className="mb-4 mt-1">
+            <button 
               onClick={() => navigate(-1)} 
               className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-medium text-l"
             >
@@ -34,191 +32,27 @@ function ProductPage() {
               <p>Kembali</p>
             </button>
           </div>
-          <div className="lg:grid lg:grid-cols-2 cara centernya gimana lg:items-start lg:gap-8">
-            <UI_productImages />
+  )
+
+  const renderContent = () => {
+    return (
+      <div className="py-5 h-screen font-inter text-gray-800">
+        <div className="my-10 container mx-auto p-8 lg:w-10/12">
+          <UI_backButton/>
+          <div className="lg:grid lg:grid-cols-2 lg:items-start my-10">
+            <ProductImages images={data.product.list_picture} imageIndex={pictureIndex} callback={setPictureIndex} />
             <div>
-              <UI_productDescription />
-              <UI_productGenderDescription />
-              <UI_productSizeSelector />
-              <UI_productActions />
+              <ProductDescription product={data.product} brand={data.brand}/>
+              <ProductGender gender={data.product.sex} />
+              <ProductSizeSelector currentIndex={sizeIndex} data={data.product.list_size} callback={setSizeIndex} />
+              <ProductActions/>
             </div>
           </div>
+          <Reviews/>
         </div>
       </div>
     )
   }
-
-  const UI_productRating = ({ rating=0, totalReviews }) => {
-    return (
-      <div className="flex gap-5">
-        <div className="rating-container">
-          {[...Array(5)].map((val, index) => (
-            <FontAwesomeIcon key={index} icon={faStar} size="xl" color="#ffe234"/>  
-          ))}      
-        </div>
-        <div className="text-gray-500 font-bold">
-          Belum ada ulasan
-        </div>
-      </div>
-    );
-  };
-
-  const UI_productImages = () => {
-    return (
-      <div className="w-full lg:sticky top-0 text-center">
-        <div className="lg:h-[600px]">
-          <img
-            src={data.product.list_picture[pictureIndex]}
-            alt="Product"
-            className="lg:w-11/12 w-full h-full rounded-xl object-cover object-top"
-          />
-        </div>
-        <div className="flex flex-wrap my-5 gap-x-8 gap-y-6 justify-center mx-auto mt-4">
-          {
-            data.product.list_picture.map((val, index) => (
-              <img 
-                src={val} 
-                alt="" 
-                key={index} 
-                onClick={() => setPictureIndex(index)} 
-                className={`w-20 cursor-pointer rounded-xl transition hover:scale-105 ease-in-out duration-250 ${pictureIndex === index ? 'outline outline-4 outline-indigo' : ''}`}
-              />
-            ))
-          }
-        </div>
-      </div>
-    );
-  };
-  
-  const UI_productDescription = () => {
-    return (
-      <div>
-        <div className="flex flex-wrap items-start gap-4">
-          <div>
-            <h2 className="text-2xl font-inter font-extrabold text-gray-800">{data.product.name}</h2>
-            <Link to={goToBrandCollection(data.brand.title)}>
-              <p className="ease-in-out duration-250 text-1xl font-inter mt-2">{data.brand.title}</p>
-            </Link>
-          </div>
-          <div className="ml-auto flex flex-wrap gap-4">
-            <button
-              type="button"
-              className="px-2.5 py-1.5 bg-pink-100 text-xs text-pink-600 rounded-md flex items-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12px"
-                fill="currentColor"
-                className="mr-1"
-                viewBox="0 0 64 64"
-              >
-                <path
-                  d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                  data-original="#000000"
-                />
-              </svg>
-              100
-            </button>
-            <button
-              type="button"
-              className="px-2.5 py-1.5 bg-gray-100 text-xs text-gray-800 rounded-md flex items-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12px"
-                fill="currentColor"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  d="M453.332 85.332c0 38.293-31.039 69.336-69.332 69.336s-69.332-31.043-69.332-69.336C314.668 47.043 345.707 16 384 16s69.332 31.043 69.332 69.332zm0 0"
-                  data-original="#000000"
-                />
-                <path
-                  d="M384 170.668c-47.063 0-85.332-38.273-85.332-85.336C298.668 38.273 336.938 0 384 0s85.332 38.273 85.332 85.332c0 47.063-38.27 85.336-85.332 85.336zM384 32c-29.418 0-53.332 23.938-53.332 53.332 0 29.398 23.914 53.336 53.332 53.336s53.332-23.938 53.332-53.336C437.332 55.938 413.418 32 384 32zm69.332 394.668C453.332 464.957 422.293 496 384 496s-69.332-31.043-69.332-69.332c0-38.293 31.039-69.336 69.332-69.336s69.332 31.043 69.332 69.336zm0 0"
-                  data-original="#000000"
-                />
-                <path
-                  d="M384 512c-47.063 0-85.332-38.273-85.332-85.332 0-47.063 38.27-85.336 85.332-85.336s85.332 38.273 85.332 85.336c0 47.059-38.27 85.332-85.332 85.332zm0-138.668c-29.418 0-53.332 23.938-53.332 53.336C330.668 456.063 354.582 480 384 480s53.332-23.938 53.332-53.332c0-29.398-23.914-53.336-53.332-53.336zM154.668 256c0 38.293-31.043 69.332-69.336 69.332C47.043 325.332 16 294.293 16 256s31.043-69.332 69.332-69.332c38.293 0 69.336 31.039 69.336 69.332zm0 0"
-                  data-original="#000000"
-                />
-                <path
-                  d="M85.332 341.332C38.273 341.332 0 303.062 0 256s38.273-85.332 85.332-85.332c47.063 0 85.336 38.27 85.336 85.332s-38.273 85.332-85.336 85.332zm0-138.664C55.914 202.668 32 226.602 32 256s23.914 53.332 53.332 53.332c29.422 0 53.336-23.934 53.336-53.332s-23.914-53.332-53.336-53.332zm0 0"
-                  data-original="#000000"
-                />
-                <path
-                  d="M135.703 245.762c-7.426 0-14.637-3.864-18.562-10.774-5.825-10.218-2.239-23.254 7.98-29.101l197.95-112.852c10.218-5.867 23.253-2.281 29.1 7.977 5.825 10.218 2.24 23.254-7.98 29.101L146.238 242.965a21.195 21.195 0 0 1-10.535 2.797zm197.93 176c-3.586 0-7.211-.899-10.54-2.797L125.142 306.113c-10.22-5.824-13.801-18.86-7.977-29.101 5.8-10.239 18.856-13.844 29.098-7.977l197.953 112.852c10.219 5.824 13.8 18.86 7.976 29.101-3.945 6.91-11.156 10.774-18.558 10.774zm0 0"
-                  data-original="#000000"
-                />
-              </svg>
-              Share
-            </button>
-          </div>
-        </div>
-        <div className="flex items-baseline space-x-2 my-4">
-          <p className="text-3xl font-semibold text-black">{formatRupiah(data.product.price)}</p>
-          <span className="px-2 py-1 text-sm rounded-full bg-green-100 text-green-800">In stock</span>
-        </div>
-        <UI_productRating/>
-        <div className="my-6">
-          <p className="text-base text-gray-500">
-            Laborum magna nulla aute sit elit elit magna reprehenderit tempor incididunt. Dolor veniam dolore amet non deserunt occaecat excepteur et ad velit consequat. Irure magna sunt occaecat nisi tempor incididunt anim occaecat nostrud est esse in.
-          </p>
-        </div>
-      </div>
-    );
-  };
-  
-  const UI_productGenderDescription = () => {
-    return (
-      <div className="mb-5">
-        <p className="font-semibold text-gray-800">Gender</p>
-        <div className="mt-3">
-          <p className="p-1 border rounded-lg inline px-3 text-gray-600">{data.product.sex}</p>
-        </div>
-      </div>
-    )
-  }
-  
-  const UI_productSizeSelector = () => {
-    if (data.product.list_size.length === 0){
-      return (
-        <div></div>
-      )
-    }
-    return (
-      <div>
-        <h2 className="text-base text-gray-800 font-semibold">Select size</h2>
-        <div className="flex flex-wrap gap-2 mt-3">
-          {data.product.list_size.map((size, index) => (
-            <label
-              key={size}
-              className="w-8 h-8 text-gray-600 cursor-pointer relative"
-              htmlFor={`size-${size.toLowerCase()}`}
-            >
-              <input
-                type="radio"
-                name="size"
-                id={`size-${size.toLowerCase()}`}
-                className="hidden peer"
-              />
-              <span className="w-full h-full rounded-md border border-gray-200 flex items-center justify-center text-sm  peer-checked:bg-blue-600 peer-checked:text-white">
-                {size}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-    );
-  };
-  
-  const UI_productActions = () => {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
-        <button className="w-full p-3 border border-gray-200 bg-gray-50 rounded-md text-gray-800">Add to cart</button>
-        <button className="w-full p-3 bg-blue-600 border border-blue-600 rounded-md text-white">Buy now</button>
-      </div>
-    );
-  };
   
   useEffect(() => {
     const getContent = async() => {
@@ -237,7 +71,7 @@ function ProductPage() {
     getContent();
   }, [params.id]);
 
-  return Page(loading, serverStatus, mainContent, true, false)
+  return Page(loading, serverStatus, renderContent, true, false)
 }
 
 export default ProductPage
