@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductReview from '../../../components/ProductReview';
+import ProductReview from '../ProductReview';
 
 export default function Reviews() {
     const RatingStars = ({ avg_stars, reviews }) => {

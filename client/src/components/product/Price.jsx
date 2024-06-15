@@ -1,5 +1,5 @@
 import React from 'react'
-import { formatRupiah } from '../../../utility/Format'
+import { formatRupiah } from '../../utility/Format'
 
 export default function ProductPrice({product}) {
   return (

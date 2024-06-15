@@ -1,5 +1,5 @@
 import React from 'react'
-import HoverInformation from '../../../components/HoverInformation';
+import HoverInformation from '../HoverInformation';
 
 export default function ProductSizeSelector({
     data,

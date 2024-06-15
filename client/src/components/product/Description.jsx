@@ -1,5 +1,5 @@
 import React from 'react'
-import { goToBrandCollection } from '../../../AppRoute'
+import { goToBrandCollection } from '../../AppRoute'
 import { Link } from 'react-router-dom'
 import ProductPrice from './Price'
 import ProductOverallRating from './OverallRating'

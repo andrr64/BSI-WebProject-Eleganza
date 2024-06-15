@@ -6,12 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Page from "../RenderPage";
 import React from 'react';
-import Reviews from "./components/Reviews";
-import ProductImages from "./components/Images";
-import ProductDescription from "./components/Description";
-import ProductSizeSelector from "./components/SizeSelector";
-import ProductGender from "./components/Gender";
-import ProductActions from "./components/Actions";
+import ProductImages from "../../components/product/Images";
+import ProductDescription from "../../components/product/Description";
+import ProductGender from "../../components/product/Gender";
+import ProductSizeSelector from "../../components/product/SizeSelector";
+import ProductActions from "../../components/product/Actions";
+import Reviews from "../../components/product/Reviews";
 
 function ProductPage() {
   const params = useParams();
