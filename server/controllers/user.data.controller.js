@@ -2,7 +2,6 @@ import bcryptjs from 'bcryptjs';
 import { UserAccount } from '../models/user.account.model.js';
 import { UserData } from '../models/user.data.model.js';
 import { serverForbidden, serverInternalError, serverNotFound, serverOk } from './response.controller.js';
-import { MESSAGE, serverLog } from './server.log.controller.js';
 import { serverProcess } from './server.process.controller.js';
 
 /**
@@ -12,7 +11,7 @@ import { serverProcess } from './server.process.controller.js';
  */
 export const getUserData = async (req, res) => {
     await serverProcess(res, async () => {
-        const data = await UserData.findById(req.params.id);
+        const data = await UserData.findOne({user_ref: req.params.id});
         if (!data) return serverNotFound(res);
         serverOk(res, data);
     }, 'get user data');
@@ -44,4 +43,27 @@ export const updateUserData = async (req, res) => {
 
         serverOk(res, userData);
     }, 'update user data');
+};
+
+/**
+ * Menambahkan item ke dalam cart pengguna.
+ * @param {Object} req - Objek request dari client.
+ * @param {Object} res - Objek response yang akan dikirimkan kembali ke client.
+ */
+export const addItemToCart = async (req, res) => {
+    await serverProcess(res, async () => {
+        const { id } = req.params;
+        const item = req.body;
+        const validUser = await UserAccount.findById(id);
+        if (!validUser) return serverNotFound(res);
+
+        const userData = await UserData.findOne({user_ref: validUser.id});
+        if (!userData) return serverNotFound(res);
+
+        userData.cart.push(item);
+
+        await userData.save();
+
+        serverOk(res, 'OK');
+    }, 'add item to cart');
 };

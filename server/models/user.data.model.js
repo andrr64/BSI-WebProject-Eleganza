@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userDataSchema = new mongoose.Schema({
     cart: {
-        type: [String],
+        type: [Object],
         default: []
     },
     address: {
