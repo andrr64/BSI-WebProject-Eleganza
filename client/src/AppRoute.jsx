@@ -21,6 +21,7 @@ export const ROUTE = {
         gender: '/collection/gender/:gender',
 
     },
+    cart: '/cart'
 }
 
 export function goToCollection(collectionName){
