@@ -5,8 +5,7 @@ import ProductPrice from './Price'
 import ProductOverallRating from './OverallRating'
 
 export default function ProductDescription({
-    product,
-    brand
+    product
 }) {
   const navigate = useNavigate();
   return (
@@ -14,8 +13,8 @@ export default function ProductDescription({
       <div className="flex flex-wrap items-start gap-4">
         <div className='space-y-2'>
           <h2 className="text-2xl font-inter font-extrabold text-gray-800">{product.name}</h2>
-          <button className='button bg-black text-white rounded-lg px-4 text-sm py-1' onClick={() => navigate(goToBrandCollection(brand.title))}>
-            {brand.title}
+          <button className='button bg-black text-white rounded-lg px-4 text-sm py-1' onClick={() => navigate(goToBrandCollection(product.brand.title))}>
+            {product.brand.title}
           </button>
         </div>
         <div className="ml-auto flex flex-wrap gap-4">

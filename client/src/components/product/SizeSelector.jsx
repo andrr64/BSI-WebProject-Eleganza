@@ -2,11 +2,11 @@ import React from 'react'
 import HoverInformation from '../HoverInformation';
 
 export default function ProductSizeSelector({
-    data,
+    product,
     currentIndex,
     callback
 }) {
-    if (data.length === 0){
+    if (product.list_size.length === 0){
         return (
             <div></div>
         )
@@ -20,7 +20,7 @@ export default function ProductSizeSelector({
             <HoverInformation title={'Meme'} description={'Lorem ipsum'}/>
         </div>
         <div className="flex flex-wrap gap-2">
-        {data.map((size, index) => (
+        {product.list_size.map((size, index) => (
             <button onClick={() => callback(index)} key={index}>
                 <span className={`transition ease-in-out duration-300 rounded-md border ${currentIndex !== index && 'hover:bg-gray-200'} border-gray-200 px-4 py-2 flex items-center justify-center ${currentIndex === index && 'bg-blue-600 text-white'} peer-checked:text-white`}>
                     {size}

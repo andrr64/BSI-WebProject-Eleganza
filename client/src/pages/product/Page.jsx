@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { useAsyncError, useNavigate, useParams } from "react-router-dom"
 import { scrollToZero } from "../../utility/ScrollToZero";
 import { getProductById, isServerOnline } from "../../api/API";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,13 +12,17 @@ import ProductGender from "../../components/product/Gender";
 import ProductSizeSelector from "../../components/product/SizeSelector";
 import ProductActions from "../../components/product/Actions";
 import Reviews from "../../components/product/Reviews";
+import Product from "../../models/product.model";
+import { TransactionItem } from "../../models/transaction.item.model";
+import { setIndexConfiguration } from "firebase/firestore";
 
 function ProductPage() {
   const params = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [serverStatus, setServerStatus] = useState(true);
-  const [data, setData] = useState();
+  const [product, setProduct] = useState();
+  const [transactionItem, setTransactionItem] = useState( new TransactionItem('0', '0', 1, 0));
   const [pictureIndex, setPictureIndex] = useState(0);
   const [sizeIndex, setSizeIndex] = useState(0);
 
@@ -32,18 +36,31 @@ function ProductPage() {
     </button>
   )
 
+  const handleMasukkanKeranjang = () => {
+
+  }
+
+  const handleSizeIndexChange = (value) => {
+    setSizeIndex(value);
+    transactionItem.setSizeIndex(value)
+  }
+
+  const handleNoteChange = (value) => {
+    transactionItem.setNote(value);
+  }
+
   const renderContent = () => {
     return (
       <div className="py-10 h-screen font-inter text-gray-800">
         <div className="my-8 container mx-auto p-8 lg:w-10/12">
           <UI_backButton/>
           <div className="lg:grid lg:grid-cols-2 lg:items-start my-5">
-            <ProductImages images={data.product.list_picture} imageIndex={pictureIndex} callback={setPictureIndex} />
+            <ProductImages images={product.data.list_picture} imageIndex={pictureIndex} callback={setPictureIndex} />
             <div>
-              <ProductDescription product={data.product} brand={data.brand}/>
-              <ProductGender gender={data.product.sex} />
-              <ProductSizeSelector currentIndex={sizeIndex} data={data.product.list_size} callback={setSizeIndex} />
-              <ProductActions/>
+              <ProductDescription product={product}/>
+              <ProductGender product={product} />
+              <ProductSizeSelector currentIndex={sizeIndex} product={product} callback={handleSizeIndexChange} />
+              <ProductActions transactionItem={transactionItem} product={product} callbackMasukkanKeranjang={() => {}}/>
             </div>
           </div>
           <Reviews/>
@@ -58,7 +75,7 @@ function ProductPage() {
         setLoading(true);
         if (!(await isServerOnline())) return setServerStatus(false);
         const res = await getProductById(params.id);
-        setData(res.data);
+        setProduct(new Product(res.data.product, res.data.brand));
       } catch (error) {
         console.log(error);
       } finally {
