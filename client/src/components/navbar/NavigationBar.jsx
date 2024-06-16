@@ -3,13 +3,12 @@ import './NavigationBar.css'
 import Profile from './Profile';
 import SearchBar from './SearchBar';
 import Logo from './Logo';
+import Cart from './Cart';
 
 const UserActions = () => (
   <div className='flex justify-end items-center gap-4 divide-x-2 divide-gray-500'>
     <div className='flex gap-4'>
-      <Profile/>
-      <Profile/>
-      <Profile/>
+      <Cart/>
     </div>
     <div className='pl-4'>
       <Profile/>
