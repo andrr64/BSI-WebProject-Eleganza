@@ -10,8 +10,8 @@ export const serverInternalError = (res, msg = '') => {
     return res.status(500).json(serverResponse(false, 500, `Internal Server Error: ${msg}`));
 }
 
-export const serverNotFound = (res) => {    
-    return res.status(404).json(serverResponse(false, 404, 'Not Found'));
+export const serverNotFound = (res, msg='not found') => {    
+    return res.status(404).json(serverResponse(false, 404, msg));
 }
 
 export const serverBadRequest = (res, data) => {
@@ -30,6 +30,6 @@ export const serverForbidden = (res) => {
     return res.status(401).json(serverResponse(false, 401, `Forbidden: Unauthorized`))
 }
 
-export const serverNotAcceptable = (res) => {
-    return res.status(406).json(serverResponse(false, 406, 'Not Acceptable'))
+export const serverNotAcceptable = (res, msg = 'Not Acceptable') => {
+    return res.status(406).json(serverResponse(false, 406, msg))
 }

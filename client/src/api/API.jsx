@@ -54,3 +54,9 @@ export async function getProductById(id){
         }
     })).json();
 }
+
+export async function addItemToCart(user_id, item) {
+    const apiEndpoint = `/user/cart/${user_id}`;
+    const response = await serverApiJsonPost(apiEndpoint, item);
+    return response.json();
+}

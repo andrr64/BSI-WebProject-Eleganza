@@ -18,7 +18,7 @@ const UserActions = () => (
 
 const NavigationBar = () => {
   return (
-    <div className="bg-black text-white grid grid-cols-3 px-20 items-center justify-between p-5 navigationBar">
+    <div className="bg-black text-white grid grid-cols-3 md:px-20 items-center justify-between p-5 navigationBar">
       <Logo/>
       <SearchBar/>
       <UserActions/>

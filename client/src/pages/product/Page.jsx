@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAsyncError, useNavigate, useParams } from "react-router-dom"
 import { scrollToZero } from "../../utility/ScrollToZero";
-import { getProductById, isServerOnline } from "../../api/API";
+import { addItemToCart, getProductById, isServerOnline } from "../../api/API";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Page from "../RenderPage";
@@ -14,7 +14,8 @@ import ProductActions from "../../components/product/Actions";
 import Reviews from "../../components/product/Reviews";
 import Product from "../../models/product.model";
 import { TransactionItem } from "../../models/transaction.item.model";
-import { setIndexConfiguration } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { CartItem } from "../../models/user.cart.item.model";
 
 function ProductPage() {
   const params = useParams();
@@ -22,9 +23,12 @@ function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [serverStatus, setServerStatus] = useState(true);
   const [product, setProduct] = useState();
-  const [transactionItem, setTransactionItem] = useState( new TransactionItem('0', '0', 1, 0));
+  const [cartItem, setCartItem] = useState(new CartItem('', params.id, 1, '', 0));
   const [pictureIndex, setPictureIndex] = useState(0);
   const [sizeIndex, setSizeIndex] = useState(0);
+  const {currentUser} = useSelector((state) => state.user);
+
+  const [stok, setStok] = useState(0);
 
   const UI_backButton = () => (
     <button 
@@ -36,17 +40,17 @@ function ProductPage() {
     </button>
   )
 
-  const handleMasukkanKeranjang = () => {
-
+  const handleMasukkanKeranjang = async () => {
+    cartItem.user_id = currentUser._id;
+    const response = await addItemToCart(currentUser._id, cartItem.json);
+    if (response.status === true){
+      setStok(stok - cartItem.quantity);
+    }
   }
 
   const handleSizeIndexChange = (value) => {
     setSizeIndex(value);
-    transactionItem.setSizeIndex(value)
-  }
-
-  const handleNoteChange = (value) => {
-    transactionItem.setNote(value);
+    cartItem.size_index = value;
   }
 
   const renderContent = () => {
@@ -60,7 +64,7 @@ function ProductPage() {
               <ProductDescription product={product}/>
               <ProductGender product={product} />
               <ProductSizeSelector currentIndex={sizeIndex} product={product} callback={handleSizeIndexChange} />
-              <ProductActions transactionItem={transactionItem} product={product} callbackMasukkanKeranjang={() => {}}/>
+              <ProductActions stock={stok} cart_item={cartItem} product={product} callbackMasukkanKeranjang={handleMasukkanKeranjang}/>
             </div>
           </div>
           <Reviews/>
@@ -68,24 +72,25 @@ function ProductPage() {
       </div>
     )
   }
-  
-  useEffect(() => {
-    const getContent = async() => {
-      try {
-        setLoading(true);
-        if (!(await isServerOnline())) return setServerStatus(false);
-        const res = await getProductById(params.id);
-        setProduct(new Product(res.data.product, res.data.brand));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    scrollToZero();
-    getContent();
-  }, [params.id]);
 
+  const getData = async() => {
+    try {
+      setLoading(true);
+      if (!(await isServerOnline())) return setServerStatus(false);
+      const res = await getProductById(params.id);
+      setProduct(new Product(res.data.product, res.data.brand));
+      setStok(res.data.product.stock);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    scrollToZero();
+    getData();
+  }, [params.id]);
   return Page(loading, serverStatus, renderContent, true, false)
 }
 

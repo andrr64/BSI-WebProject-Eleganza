@@ -4,7 +4,6 @@ import { UserAccount } from '../models/user.account.model.js';
 import { serverBadRequest, serverForbidden, serverNotFound, serverOk, serverResponse } from './response.controller.js';
 import { newAccountValidation } from '../validation/user.account.validation.js';
 import { serverProcess } from './server.process.controller.js';
-import { UserData } from '../models/user.data.model.js';
 
 /**
  * Membuat akun pengguna baru dalam sistem.
@@ -30,7 +29,6 @@ export const createUser = async (req, res, next) => {
         const hashPassword = await bcryptjs.hash(password, 10);
         
         // Inisialisasi data pengguna baru
-
         const newUser = new UserAccount({
              name, 
              email, 
@@ -38,13 +36,7 @@ export const createUser = async (req, res, next) => {
         }
         );
         await newUser.save();
-
-        const newUserData = new UserData({user_ref: newUser._id});
-        await newUserData.save();
-
-        // Mengirim respons sukses dengan data pengguna yang telah dibuat
-        const { password: pass, ...rest } = newUser._doc;
-        serverOk(res, rest);
+        serverOk(res);
     }, 'create user');
 };
 
