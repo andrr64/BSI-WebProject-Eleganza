@@ -28,8 +28,6 @@ export const addItem = async (req, res) => {
 
         if (quantity > product.stock) return serverNotAcceptable(res, 'quantity > stock');
 
-        product.stock -= quantity;
-
         const existingCartItem = await CartItems.findOne({ user_id });
         if (!existingCartItem) {
             const newItem = new CartItems({
@@ -45,9 +43,10 @@ export const addItem = async (req, res) => {
         } else {
             const itemAlreadyExist = await CartItems.findOne({ product_id, user_id });
             if (itemAlreadyExist) {
-                itemAlreadyExist.quantity += quantity;
+                const totalQty = itemAlreadyExist.quantity + Number(quantity);
+                if (totalQty > product.stock) return serverNotAcceptable(res, `Maksimal pembelian adalah ${product.stock}. Cek keranjang kamu`);
+                itemAlreadyExist.quantity = itemAlreadyExist.quantity + Number(quantity);
                 await itemAlreadyExist.save();
-                console.log("Existing item updated:", itemAlreadyExist);
             } else {
                 const itemLength = (await CartItems.find({ user_id })).length;
                 const newItem = new CartItems({
@@ -59,10 +58,8 @@ export const addItem = async (req, res) => {
                     index: itemLength
                 });
                 await newItem.save();
-                console.log("New item added to existing cart:", newItem);
             }
         }
-        await product.save();
         serverOk(res);
     }, 'add item to cart');
 };
