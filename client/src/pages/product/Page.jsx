@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAsyncError, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { scrollToZero } from "../../utility/ScrollToZero";
 import { addItemToCart, getProductById, isServerOnline } from "../../api/API";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,9 +13,10 @@ import ProductSizeSelector from "../../components/product/SizeSelector";
 import ProductActions from "../../components/product/Actions";
 import Reviews from "../../components/product/Reviews";
 import Product from "../../models/product.model";
-import { TransactionItem } from "../../models/transaction.item.model";
 import { useSelector } from "react-redux";
 import { CartItem } from "../../models/user.cart.item.model";
+import { FaCheckCircle } from "react-icons/fa";
+import { delay } from "../../utility/Delay";
 
 function ProductPage() {
   const params = useParams();
@@ -27,6 +28,9 @@ function ProductPage() {
   const [pictureIndex, setPictureIndex] = useState(0);
   const [sizeIndex, setSizeIndex] = useState(0);
   const {currentUser} = useSelector((state) => state.user);
+  const [toast, setToast] = useState(false);
+  const [onProcess, setOnProcess] = useState(false);
+  const [error, setError] = useState(null);
 
   const [stok, setStok] = useState(0);
 
@@ -41,10 +45,25 @@ function ProductPage() {
   )
 
   const handleMasukkanKeranjang = async () => {
-    cartItem.user_id = currentUser._id;
-    const response = await addItemToCart(currentUser._id, cartItem.json);
-    if (response.status === true){
-      setStok(stok - cartItem.quantity);
+    if (!onProcess){
+      setOnProcess(true);
+      cartItem.user_id = currentUser._id;
+      const response = await addItemToCart(currentUser._id, cartItem.json);
+      if (response.status === true){
+        if (!toast){
+          setToast(true);
+          await delay(3500);
+          setToast(false);
+        }
+      } else {
+        if (toast) setToast(false);
+        setError(response.data);
+        setToast(true);
+        await delay(3500);
+        setToast(false);
+        setError(null);
+      }
+      setOnProcess(false);
     }
   }
 
@@ -53,9 +72,22 @@ function ProductPage() {
     cartItem.size_index = value;
   }
 
+  const showToast = () => {
+    return (toast && (
+      <div className="toast toast-bottom toast-center z-[101]">
+        <div className={`${!error? 'alert-success' : 'alert-error'} alert flex items-center text-white`}>
+          <FaCheckCircle size={'24px'}/>
+          {!error && 'Produk berhasil dimasukkan ke keranjang'}
+          {error && (error)}
+        </div>
+      </div>
+    ))
+  }
+
   const renderContent = () => {
     return (
       <div className="py-10 h-screen font-inter text-gray-800">
+        {showToast()}
         <div className="my-8 container mx-auto p-8 lg:w-10/12">
           <UI_backButton/>
           <div className="lg:grid lg:grid-cols-2 lg:items-start my-5">

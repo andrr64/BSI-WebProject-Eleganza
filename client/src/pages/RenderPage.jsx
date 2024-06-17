@@ -1,17 +1,16 @@
 import Content from "./Content";
 import ServerError from "./ServerError";
-import Lottie from "react-lottie";
 import loadingAnimation from "../assets/lotties/loading";
 
 const _loadingAnimation = () => {
-  const lottie_loading_opt = {
-    loop: true,
-    autoplay: true,
-    animationData: loadingAnimation,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  }
+  // const lottie_loading_opt = {
+  //   loop: true,
+  //   autoplay: true,
+  //   animationData: loadingAnimation,
+  //   rendererSettings: {
+  //     preserveAspectRatio: "xMidYMid slice"
+  //   }
+  // }
   
   return (
     <div className="w-screen mt-5 h-screen flex items-center justify-center">
