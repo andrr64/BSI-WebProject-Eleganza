@@ -63,6 +63,12 @@ export async function addItemToCart(user_id, item) {
 
 export async function serverGetItemsLength(user_id) {
     const apiEndpoint = `/user/cart/length/${user_id}`;
-    const response = await serverApiJsonGet(apiEndpoint, {});
-    return response.json();
+    const response = await serverApiJsonGet(apiEndpoint);
+    return await response.json();
+}
+
+export async function serverGetUserCartItems(user_id) {
+    const endpoint = `/user/cart/${user_id}`;
+    const response = await serverApiJsonGet(endpoint);
+    return await response.json();
 }
