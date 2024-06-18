@@ -68,8 +68,33 @@ export const getCartItemsLength = async (req, res) => {
     await serverProcess(res, async() => {
         const user_id = req.params.id;
         const cartData = await CartItems.find({user_id});
-        console.log(user_id); 
         if (!cartData) return serverNotFound(res);
         serverOk(res, cartData.length);
     });
+}
+
+export const getCartItems = async(req, res) => {
+    await serverProcess(res, async() => {
+        const user_id = req.params.id;
+        const cartData = await CartItems.find({ user_id });
+        if (!cartData) return serverNotFound(res);
+        
+        let formatted_data = [];
+        for (let index = 0; index < cartData.length; index++) {
+            const product_data = await Product.findById(cartData[index].product_id);
+            formatted_data.push({
+                // Data dari cartData
+                quantity: cartData[index].quantity,
+                note: cartData[index].note,
+                
+                // Data dari product_data
+                name: product_data.name,
+                picture: product_data.list_picture[0], // Asumsi bahwa list_picture ada di product_data
+                price: product_data.price,
+                stock: product_data.stock,
+                category: product_data.category
+            });
+        }
+        serverOk(res, formatted_data); // Pastikan memanggil serverOk dengan res sebagai argumen pertama
+    })
 }
