@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { CartItem } from "../../models/user.cart.item.model";
 import { FaCheckCircle } from "react-icons/fa";
 import { delay } from "../../utility/Delay";
+import { ALERT, showAlert } from "../../components/Alert";
 
 function ProductPage() {
   const params = useParams();
@@ -45,6 +46,9 @@ function ProductPage() {
   )
 
   const handleMasukkanKeranjang = async () => {
+    if (!currentUser){
+      return showAlert(ALERT.WARNING, 'Login terlebih dahulu.');
+    }
     if (!onProcess){
       setOnProcess(true);
       cartItem.user_id = currentUser._id;
@@ -64,6 +68,12 @@ function ProductPage() {
         setError(null);
       }
       setOnProcess(false);
+    }
+  }
+
+  const handleBeliSekarang = async() => {
+    if (!currentUser){
+      return showAlert(ALERT.WARNING, 'Login terlebih dahulu.');
     }
   }
 
@@ -96,7 +106,7 @@ function ProductPage() {
               <ProductDescription product={product}/>
               <ProductGender product={product} />
               <ProductSizeSelector currentIndex={sizeIndex} product={product} callback={handleSizeIndexChange} />
-              <ProductActions stock={stok} cart_item={cartItem} product={product} callbackMasukkanKeranjang={handleMasukkanKeranjang}/>
+              <ProductActions stock={stok} cart_item={cartItem} product={product} callbackMasukkanKeranjang={handleMasukkanKeranjang} callbackBeliSekarang={handleBeliSekarang}/>
             </div>
           </div>
           <Reviews/>
