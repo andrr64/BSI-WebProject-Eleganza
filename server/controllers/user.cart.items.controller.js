@@ -63,3 +63,13 @@ export const addItem = async (req, res) => {
         serverOk(res);
     }, 'add item to cart');
 };
+
+export const getCartItemsLength = async (req, res) => {
+    await serverProcess(res, async() => {
+        const user_id = req.params.id;
+        const cartData = await CartItems.find({user_id});
+        console.log(user_id); 
+        if (!cartData) return serverNotFound(res);
+        serverOk(res, cartData.length);
+    });
+}
