@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IconCartPlus, IconCatatan } from '../Icons';
 
-export default function ProductActions({ stock, cart_item, product, callbackMasukkanKeranjang }) {
+export default function ProductActions({ stock, cart_item, product, callbackMasukkanKeranjang, callbackBeliSekarang}) {
   const [qty, setQty] = useState(1);
   const [note, setNote] = useState('');
 
@@ -67,6 +67,7 @@ export default function ProductActions({ stock, cart_item, product, callbackMasu
         <button
           className={`${isDisabled? 'bg-red-200 cursor-not-allowed' : 'bg-blue-600 border border-blue-600'} w-full p-3 rounded-md text-white`}
           disabled={isDisabled}
+          onClick={() => callbackBeliSekarang()}
         >
           Beli Sekarang
         </button>
