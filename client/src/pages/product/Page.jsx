@@ -15,7 +15,7 @@ import Reviews from "../../components/product/Reviews";
 import Product from "../../models/product.model";
 import { useSelector } from "react-redux";
 import { CartItem } from "../../models/user.cart.item.model";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { delay } from "../../utility/Delay";
 import { ALERT, showAlert } from "../../components/Alert";
 
@@ -36,12 +36,9 @@ function ProductPage() {
   const [stok, setStok] = useState(0);
 
   const UI_backButton = () => (
-    <button 
-      onClick={() => navigate(-1)} 
-      className="transition ease-in-out duration-300 flex hover:-translate-x-2 items-center font-medium text-l"
-    >
-      <FontAwesomeIcon icon={faChevronLeft} className="mr-2" />
-      <p>Kembali</p>
+    <button className='btn flex gap-2' onClick={() => navigate(-1)}>
+        <FaArrowLeft/>
+        <span>Kembali</span>
     </button>
   )
 
