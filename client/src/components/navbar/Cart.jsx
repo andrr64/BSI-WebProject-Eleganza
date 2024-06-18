@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { IconCart } from '../Icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ROUTE } from '../../AppRoute'
 import { serverGetItemsLength } from '../../api/API';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ export default function Cart() {
   
   const [itemsLength, setItemsLength] = useState('1');
   const {currentUser} = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getItemsLength = async() => {
@@ -22,6 +23,7 @@ export default function Cart() {
     if (!currentUser){
       return showAlert(ALERT.WARNING, 'Login terlebih dahulu.');
     }
+    return navigate(ROUTE.cart);
   }
 
   return (
