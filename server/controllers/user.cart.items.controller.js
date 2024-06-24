@@ -99,3 +99,22 @@ export const getCartItems = async(req, res) => {
         serverOk(res, formatted_data); // Pastikan memanggil serverOk dengan res sebagai argumen pertama
     })
 }
+
+export const delCartItems = async(req, res) => {
+    await serverProcess(res, async() => {
+        const user_id = req.params.id;
+        console.log(user_id);
+        const { product_id } = req.body; // Asumsi bahwa product_id diberikan dalam body request
+
+        // Mencari item dalam keranjang yang sesuai dengan user_id dan product_id
+        const cartItem = await CartItems.findOne({ user_id, product_id });
+        if (!cartItem) {
+            return serverNotFound(res, 'Item tidak ditemukan di keranjang');
+        }
+
+        // Menghapus item dari keranjang
+        await CartItems.deleteOne({ _id: cartItem._id });
+
+        serverOk(res, 'Item berhasil dihapus dari keranjang');
+    }, 'delete item from cart');
+}
