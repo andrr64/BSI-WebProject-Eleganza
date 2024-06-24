@@ -14,7 +14,9 @@ export default function Cart() {
 
   useEffect(() => {
     const getItemsLength = async() => {
-      setItemsLength((await serverGetItemsLength(currentUser._id)).data);
+      if (currentUser !== null){
+        setItemsLength((await serverGetItemsLength(currentUser._id)).data);
+      }
     }
     getItemsLength();
   });
