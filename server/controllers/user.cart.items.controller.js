@@ -89,6 +89,7 @@ export const getCartItems = async(req, res) => {
                 
                 // Data dari product_data
                 name: product_data.name,
+                id: product_data._id,
                 picture: product_data.list_picture[0], // Asumsi bahwa list_picture ada di product_data
                 price: product_data.price,
                 stock: product_data.stock,
