@@ -6,7 +6,7 @@ import CartPage from './Page';
 
 export default function CartPageController() {
     const {currentUser} = useSelector((state) => state.user);
-
+    
     return (
         currentUser === null ?
         <Navigate to={ROUTE.user.signin}/> : 
