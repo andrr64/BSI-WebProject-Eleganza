@@ -86,3 +86,14 @@ export async function serverDelUserCartItem(user_id, product_id) {
     });
     return await response.json();
 }
+
+export async function serverAddTransaction(req_body) {
+    const res = await fetch('/api/v1/user/transaction', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(req_body)
+    });
+    return await res.json();
+}

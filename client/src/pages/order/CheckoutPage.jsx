@@ -3,7 +3,7 @@ import NavigationBar from '../../components/navbar/NavigationBar';
 import { formatRupiah } from '../../utility/Format';
 import { useNavigate } from 'react-router-dom';
 import { getUserRedux } from '../../App';
-import { serverGetUserCartItems } from '../../api/API';
+import { serverAddTransaction, serverGetUserCartItems } from '../../api/API';
 import { IoChevronBack } from 'react-icons/io5';
 import { ROUTE } from '../../AppRoute';
 
@@ -13,6 +13,7 @@ const CheckoutPage = () => {
     const [loading, setLoading] = useState(true);
     const [serverStatus, setServerStatus] = useState(true);
     const [kontak, setKontak] = useState('')
+    const [courier, setCourier] = useState('SICEPAT');
     const [alamat, setAlamat] = useState('')
     const [nama, setNama] = useState('')
     const navigate = useNavigate();
@@ -41,9 +42,16 @@ const CheckoutPage = () => {
       });
     }, [])
     
-    const handleSubmit = () => {
-        const response = true;
-        if (true){
+    const handleSubmit = async() => {
+        const response = await serverAddTransaction({
+            user_id: currentUser._id,
+            items: cartItems,
+            name: nama,
+            address: alamat,
+            contact: kontak,
+            courier: courier
+        });
+        if (response.status === true){
             navigate(ROUTE.checkout_success);
         }
     }
@@ -85,7 +93,7 @@ const CheckoutPage = () => {
                     <p className="mt-8 text-lg font-medium">Kurir Pengiriman</p>
                     <form className="mt-5 grid gap-6">
                         <div className="relative">
-                            <input className="peer hidden" id="radio_1" type="radio" name="radio" defaultChecked />
+                            <input onClick={(e) => setCourier('SICEPAT')} className="peer hidden" id="radio_1" type="radio" name="radio" defaultChecked />
                             <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
                             <label className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4" htmlFor="radio_1">
                                 <img className="w-14 object-contain" src="/images/naorrAeygcJzX0SyNI4Y0.png" alt="" />
@@ -97,7 +105,7 @@ const CheckoutPage = () => {
                         </div>
 
                         <div className="relative">
-                            <input className="peer hidden" id="radio_2" type="radio" name="radio" />
+                            <input onClick={(e) => setCourier('JNE')} className="peer hidden" id="radio_2" type="radio" name="radio" />
                             <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
                             <label className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4" htmlFor="radio_2">
                                 <img className="w-14 object-contain" src="/images/oG8xsl3xsOkwkMsrLGKM4.png" alt="" />
