@@ -81,7 +81,7 @@ export default function ProfileMenu() {
           <li className='pt-5'>
             <hr />
             <div className='grid grid-cols-1 divide-y items-center'>
-              {buildMenuItem('Pengaturan Akun', ROUTE.user.account, faGear)}
+              {buildMenuItem('Pengaturan Akun', ROUTE.user.setting, faGear)}
               {buildMenuItem('Transaksi Ku', ROUTE.user.transactions, faReceipt)}
               {buildMenuItem('Keluar', '', faDoorOpen, handleSignOut)}
             </div>

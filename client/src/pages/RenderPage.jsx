@@ -24,5 +24,5 @@ const _loadingAnimation = () => {
 export  default function Page(loading, server_status, render_function, nav, footer){
   if (!server_status)
     return <ServerError/>;  
-  return <Content nav={nav} footer={footer && !loading} main={(loading && server_status? _loadingAnimation() : render_function())}/>;
+  return <Content nav={nav} footer={footer===true && !loading} main={(loading && server_status? _loadingAnimation() : render_function())}/>;
 }

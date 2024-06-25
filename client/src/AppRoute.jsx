@@ -13,7 +13,8 @@ export const ROUTE = {
     user: {
         signin: '/user/signin',
         signup: '/user/signup',
-        profile: '/user/profile'
+        profile: '/user/profile',
+        setting: '/user/setting'
     },
     collection: {
         brand: '/collection/brand/:name',
@@ -21,7 +22,9 @@ export const ROUTE = {
         gender: '/collection/gender/:gender',
 
     },
-    cart: '/cart'
+    cart: '/cart',
+    checkout: '/checkout',
+    checkout_success : '/checkout/success'
 }
 
 export function goToCollection(collectionName){

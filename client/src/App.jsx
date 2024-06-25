@@ -13,6 +13,9 @@ import ServerError from "./pages/ServerError";
 import ProductPage from "./pages/product/Page";
 import CartPageController from "./pages/cart/Controller";
 import { useSelector } from "react-redux";
+import CheckoutPage from "./pages/order/CheckoutPage";
+import AccountSetting from "./pages/account/Page";
+import Checkoutuccess from "./pages/order/Success";
 
 export function getUserRedux(){
   return useSelector((state) => state.user);
@@ -26,12 +29,15 @@ function App() {
         <Route path={ROUTE.user.signin} element={<SignInController />} />
         <Route path={ROUTE.user.signup} element={<SignUpController />} />
         <Route path={ROUTE.user.profile} element={<ProfileController />} />
+        <Route path={ROUTE.user.setting} element={<AccountSetting/>} />
         <Route path={ROUTE.collection.brand} element={<CollectionBrand />} />
         <Route path={ROUTE.collection.gender} element={<CollectionGender />} />
         <Route path={ROUTE.collection.category} element={<CollectionCategory />} />
         <Route path={ROUTE.product.detail} element={<ProductPage />} />
         <Route path={ROUTE.cart} element={<CartPageController />} />
         <Route path={ROUTE.server.error} element={<ServerError />} />
+        <Route path={ROUTE.checkout} element={<CheckoutPage/>} />
+        <Route path={ROUTE.checkout_success} element={<Checkoutuccess/>} />
         <Route path="*" element={<NotFound />} />
         <Route path="/experiment" element={<Experiment />} />
       </Routes>
