@@ -31,4 +31,4 @@ export const homepageSchema = new mongoose.Schema({
     }
 })
 
-export const HomepageContent = mongoose.model('homepage_content', homepageSchema); 
+export const HomepageContent = mongoose.model('homepage.content', homepageSchema); 

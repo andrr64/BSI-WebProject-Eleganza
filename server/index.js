@@ -11,7 +11,6 @@ import API_productRoute from './routes/product.route.js';
 import API_adminRoute from './routes/admin.route.js';
 import API_webRoute from './routes/web.route.js';
 import API_brandRoute from './routes/brand.route.js';
-import API_chat from './routes/chat.route.js';
 
 // Import fungsi respons dari controller
 import { serverOk, serverResponse } from './controllers/response.controller.js';
@@ -52,7 +51,6 @@ app.use('/api/v1/product', API_productRoute);
 app.use('/api/v1/admin', API_adminRoute);
 app.use('/api/v1/web', API_webRoute);
 app.use('/api/v1/brand', API_brandRoute);
-app.use('/api/v1/chat', API_chat);
 app.get('/status', (req, res) => {
   return serverOk(res);
 })
