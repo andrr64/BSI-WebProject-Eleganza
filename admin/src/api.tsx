@@ -130,7 +130,7 @@ export async function serverGetProducts() {
 }
 
 export async function serverGetAllTransaction() {
-    const response = await fetch('/api/v1/transaction', {
+    const response = await fetch('/api/v1/admin/transaction', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

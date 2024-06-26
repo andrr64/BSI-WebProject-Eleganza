@@ -1,6 +1,7 @@
+import { serverGetAllTransaction } from '../../api';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 const Card: React.FC<{ children: ReactNode, size: String }> = ({ children, size }) => {
   return (
@@ -11,6 +12,22 @@ const Card: React.FC<{ children: ReactNode, size: String }> = ({ children, size 
 }
 
 const Transaction = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  const getData = async() => {
+    const response = await serverGetAllTransaction();
+    if (response.status === true){
+      setTransactions(response.data);
+      console.log(response);
+      
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  }, [])
+  
+  
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Transaksi" />

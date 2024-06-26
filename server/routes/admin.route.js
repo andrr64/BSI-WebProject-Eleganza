@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/login', loginAdmin);
 router.post('/create', createAdmin);
-router.post('/transaction', getAllTransaction);
+router.get('/transaction', getAllTransaction);
 
 export default router;

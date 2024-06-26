@@ -7,6 +7,7 @@ import ProductOverallRating from './OverallRating'
 export default function ProductDescription({
     product
 }) {
+  console.log(product);
   const navigate = useNavigate();
   return (
     <div>
@@ -75,7 +76,7 @@ export default function ProductDescription({
       <ProductOverallRating totalReviews={2} rating={0}/>
       <div className="my-6">
         <p className="text-base text-gray-500">
-          Laborum magna nulla aute sit elit elit magna reprehenderit tempor incididunt. Dolor veniam dolore amet non deserunt occaecat excepteur et ad velit consequat. Irure magna sunt occaecat nisi tempor incididunt anim occaecat nostrud est esse in.
+          {product.data.description}
         </p>
       </div>
     </div>
