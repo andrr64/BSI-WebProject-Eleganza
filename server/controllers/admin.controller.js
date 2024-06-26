@@ -1,13 +1,11 @@
-/*
-    File: auth.controller.js
-    Deskripsi: Modul untuk mengelola otentikasi admin
-*/
-
 import bcryptjs from 'bcryptjs'; // Import library bcryptjs untuk melakukan hashing password
 import jwt from 'jsonwebtoken'; // Import library jwt untuk menghasilkan token JWT
 import { Admin } from '../models/admin.model.js'; // Import model Admin untuk berinteraksi dengan database
 import { serverForbidden, serverNotFound, serverOk, serverResponse } from './response.controller.js'; // Import fungsi serverResponse untuk memformat respons JSON
 import { isTokenValid } from '../security/admin.security.js'; // Import fungsi isTokenValid untuk memeriksa kevalidan token JWT
+import { serverProcess } from './server.process.controller.js';
+import { Transaction } from '../models/user.transaction.model.js';
+import { Product } from '../models/product.model.js';
 
 /*
     Fungsi: loginAdmin
@@ -96,4 +94,11 @@ export const createAdmin = async (req, res, next) => {
         // Kirim respons dengan status 500 jika terjadi kesalahan internal server
         return res.status(500).json(serverResponse(false, 500, 'Internal server error'));
     }
+}
+
+export const getAllTransaction = async (req, res, next) => {
+    await serverProcess(res, async () => {
+        const data = await Transaction.find();
+        return serverOk(res, data);
+    })
 }
